@@ -1,3 +1,3 @@
 SOURCES = oci.cpp
 CONFIG -= qt dylib
-LIBS += -lclntsh
+!win32:LIBS += -lclntsh
