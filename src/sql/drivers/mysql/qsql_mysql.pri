@@ -4,7 +4,7 @@ SOURCES += $$PWD/qsql_mysql.cpp
 QMAKE_CXXFLAGS *= $$QT_CFLAGS_MYSQL
 LIBS += $$QT_LFLAGS_MYSQL
 
-unix {
+if (unix|mingw) {
     isEmpty(QT_LFLAGS_MYSQL) {
         !contains(LIBS, .*mysqlclient.*):!contains(LIBS, .*mysqld.*) {
             use_libmysqlclient_r:LIBS += -lmysqlclient_r
