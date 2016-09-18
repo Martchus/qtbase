@@ -3244,6 +3244,9 @@ MakefileGenerator::pkgConfigFileName(bool fixify, bool onlyPrependDestdir)
         if (dot != -1)
             ret = ret.left(dot);
     }
+    if (project->isActiveConfig("debug")) {
+        ret += "d";
+    }
     ret += Option::pkgcfg_ext;
     QString subdir = project->first("QMAKE_PKGCONFIG_DESTDIR").toQString();
     if(!subdir.isEmpty()) {
