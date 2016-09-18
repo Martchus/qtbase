@@ -3257,6 +3257,9 @@ MakefileGenerator::pkgConfigFileName(bool fixify, bool onlyPrependDestdir)
     if (project->isActiveConfig("debug")) {
         ret += "d";
     }
+    if (project->isActiveConfig("staticlib")) {
+        ret.insert(0, QStringLiteral("Static"));
+    }
     ret += Option::pkgcfg_ext;
     QString subdir = project->first("QMAKE_PKGCONFIG_DESTDIR").toQString();
     if(!subdir.isEmpty()) {
@@ -3433,11 +3436,11 @@ MakefileGenerator::writePkgConfigFile()
     t << endl;
 
     // requires
-    const QString requiresString = project->values("QMAKE_PKGCONFIG_REQUIRES").join(' ');
-    if (!requiresString.isEmpty()) {
-        t << "Requires: " << requiresString << endl;
+    t << "Requires:";
+    const auto pkgconfigRequires = project->values("QMAKE_PKGCONFIG_REQUIRES");
+    for (const auto &required : pkgconfigRequires) {
+        t << (project->isActiveConfig("staticlib") ? QStringLiteral(" Static") : QStringLiteral(" ")) << required.toQString();
     }
-
     t << endl;
 }
 
