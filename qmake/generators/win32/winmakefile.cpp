@@ -753,7 +753,7 @@ QString Win32MakefileGenerator::defaultInstall(const QString &t)
                 }
                 if(!ret.isEmpty())
                     ret += "\n\t";
-                ret += installMetaFile(ProKey("QMAKE_PKGCONFIG_INSTALL_REPLACE"), pkgConfigFileName(true), dst_pc);
+                ret += installMetaFile(ProKey("QMAKE_PKGCONFIG_INSTALL_REPLACE"), pkgConfigFileName(true, true), dst_pc);
                 if(!uninst.isEmpty())
                     uninst.append("\n\t");
                 uninst.append("-$(DEL_FILE) " + escapeFilePath(dst_pc));
