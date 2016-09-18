@@ -67,6 +67,8 @@
             },
             "headers": "mysql.h",
             "sources": [
+                { "libs": "-lmariadbclient -lssl -lcrypto -lgdi32 -lws2_32 -lpthread -lz -lm", "condition": "config.win32 && !features.shared" },
+                { "libs": "-lmariadb", "condition": "config.win32 && features.shared" },
                 { "type": "mysqlConfig", "query": "--libs_r", "cleanlibs": true },
                 { "type": "mysqlConfig", "query": "--libs", "cleanlibs": true },
                 { "type": "mysqlConfig", "query": "--libs_r", "cleanlibs": false },
