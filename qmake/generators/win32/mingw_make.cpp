@@ -152,7 +152,7 @@ void MingwMakefileGenerator::init()
 
     processVars();
 
-    project->values("LIBS") += project->values("RES_FILE");
+    project->values("OBJECTS") += project->values("RES_FILE");
 
     if (project->isActiveConfig("dll")) {
         QString destDir = "";
