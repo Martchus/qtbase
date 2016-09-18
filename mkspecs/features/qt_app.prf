@@ -20,6 +20,7 @@ isEmpty(QMAKE_INFO_PLIST): CONFIG -= app_bundle
 QMAKE_LFLAGS += $$QMAKE_LFLAGS_GCSECTIONS
 
 host_build: QT -= gui   # no host tool will ever use gui
+host_build: QMAKE_RPATHDIR += $$[QT_INSTALL_LIBS/dev] # force rpath
 host_build:force_bootstrap {
     !build_pass:contains(QT_CONFIG, release_tools): CONFIG += release
     contains(QT, core(-private)?|xml) {
@@ -30,7 +31,6 @@ host_build:force_bootstrap {
 } else {
     !build_pass:contains(QT_CONFIG, debug_and_release): CONFIG += release
     target.path = $$[QT_INSTALL_BINS]
-    CONFIG += relative_qt_rpath  # Qt's tools and apps should be relocatable
 }
 INSTALLS += target
 
