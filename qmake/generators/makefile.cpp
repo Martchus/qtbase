@@ -3212,7 +3212,7 @@ MakefileGenerator::openOutput(QFile &file, const QString &build) const
 }
 
 QString
-MakefileGenerator::pkgConfigFileName(bool fixify)
+MakefileGenerator::pkgConfigFileName(bool fixify, bool onlyPrependDestdir)
 {
     QString ret = project->first("QMAKE_PKGCONFIG_FILE").toQString();
     if (ret.isEmpty()) {
@@ -3237,7 +3237,11 @@ MakefileGenerator::pkgConfigFileName(bool fixify)
     if(fixify) {
         if(QDir::isRelativePath(ret) && !project->isEmpty("DESTDIR"))
             ret.prepend(project->first("DESTDIR").toQString());
-        ret = fileFixify(ret, FileFixifyBackwards);
+        if (onlyPrependDestdir) {
+            ret = Option::fixPathToLocalOS(ret);
+        } else {
+            ret = fileFixify(ret, FileFixifyBackwards);
+        }
     }
     return ret;
 }
