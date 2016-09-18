@@ -92,7 +92,7 @@ protected:
     virtual void writeDefaultVariables(QTextStream &t);
 
     QString pkgConfigPrefix() const;
-    QString pkgConfigFileName(bool fixify=true);
+    QString pkgConfigFileName(bool fixify=true, bool onlyPrependDestdir = false);
     QString pkgConfigFixPath(QString) const;
     void writePkgConfigFile();   // for pkg-config
 
