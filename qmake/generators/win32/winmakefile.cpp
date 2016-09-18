@@ -80,9 +80,13 @@ Win32MakefileGenerator::parseLibFlag(const ProString &flag, ProString *arg)
 bool
 Win32MakefileGenerator::findLibraries(bool linkPrl, bool mergeLflags)
 {
-    ProStringList impexts = project->values("QMAKE_LIB_EXTENSIONS");
-    if (impexts.isEmpty())
-        impexts = project->values("QMAKE_EXTENSION_STATICLIB");
+    ProStringList impexts;
+    if (project->isActiveConfig("staticlib")) {
+      impexts.append(project->values("QMAKE_EXTENSION_STATICLIB"));
+    } else {
+      impexts.append(project->values("QMAKE_EXTENSION_IMPORTLIB"));
+      impexts.append(project->values("QMAKE_EXTENSION_STATICLIB"));
+    }
     QList<QMakeLocalFileName> dirs;
     for (const ProString &dlib : project->values("QMAKE_DEFAULT_LIBDIRS"))
         dirs.append(QMakeLocalFileName(dlib.toQString()));
@@ -255,9 +259,12 @@ void Win32MakefileGenerator::fixTargetExt()
     if (!project->values("QMAKE_APP_FLAG").isEmpty()) {
         project->values("TARGET_EXT").append(".exe");
     } else if (project->isActiveConfig("shared")) {
+        ProString impext = project->first("QMAKE_EXTENSION_IMPORTLIB");
+        if (impext.isEmpty())
+          impext = project->first("QMAKE_PREFIX_STATICLIB");
         project->values("LIB_TARGET").prepend(project->first("QMAKE_PREFIX_STATICLIB")
                                               + project->first("TARGET") + project->first("TARGET_VERSION_EXT")
-                                              + '.' + project->first("QMAKE_EXTENSION_STATICLIB"));
+                                              + '.' + impext);
         project->values("TARGET_EXT").append(project->first("TARGET_VERSION_EXT") + "."
                 + project->first("QMAKE_EXTENSION_SHLIB"));
         project->values("TARGET").first() = project->first("QMAKE_PREFIX_SHLIB") + project->first("TARGET");
