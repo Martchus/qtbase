@@ -199,10 +199,6 @@ qtConfig(gui) {
         SUBDIRS += src_3rdparty_harfbuzzng
         src_gui.depends += src_3rdparty_harfbuzzng
     }
-    qtConfig(angle) {
-        SUBDIRS += src_angle
-        src_gui.depends += src_angle
-    }
     qtConfig(png):!qtConfig(system-png) {
         SUBDIRS += src_3rdparty_libpng
         src_3rdparty_freetype.depends += src_3rdparty_libpng
