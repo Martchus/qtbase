@@ -3,7 +3,8 @@
 qtConfig(opengl): CONFIG += opengl
 qtConfig(opengles2): CONFIG += opengles2
 
-qtConfig(opengl) {
+qtConfig(opengl)|qtConfig(opengles2) {
+    mingw:QMAKE_CXXFLAGS+="-Wa,-mbig-obj"
 
     HEADERS += opengl/qopengl.h \
                opengl/qopengl_p.h \
