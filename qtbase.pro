@@ -20,6 +20,12 @@ CLEAN_DEPS += qmake-clean
 # recursive distclean proceeds, including beyond qtbase.
 DISTCLEAN_DEPS += qmake-clean
 
+shared|actually_a_shared_build {
+    DEVICE_PRI_SUFFIX = .pri
+} else {
+    DEVICE_PRI_SUFFIX = .static.pri
+}
+
 # Files created by configure.
 # config.status (and configure.cache, which is the same for Windows)
 # are omitted for convenience of rebuilds.
@@ -27,7 +33,7 @@ QMAKE_DISTCLEAN += \
     config.summary \
     config.tests/.qmake.cache \
     mkspecs/qconfig.pri \
-    mkspecs/qdevice.pri \
+    mkspecs/qdevice$$DEVICE_PRI_SUFFIX \
     mkspecs/qmodule.pri \
     src/corelib/global/qconfig.h \
     src/corelib/global/qconfig_p.h \
@@ -78,7 +84,7 @@ prefix_build|!equals(PWD, $$OUT_PWD) {
 mkspecs.path = $$[QT_HOST_DATA]/mkspecs
 mkspecs.files = \
     $$OUT_PWD/mkspecs/qconfig.pri $$OUT_PWD/mkspecs/qmodule.pri \
-    $$OUT_PWD/mkspecs/qdevice.pri \
+    $$OUT_PWD/mkspecs/qdevice$$DEVICE_PRI_SUFFIX \
     $$files($$PWD/mkspecs/*)
 mkspecs.files -= $$PWD/mkspecs/modules $$PWD/mkspecs/modules-inst
 INSTALLS += mkspecs
