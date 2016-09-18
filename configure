@@ -7181,6 +7181,12 @@ host_build {
 }
 QT_CONFIG += $QT_CONFIG
 
+contains(CONFIG, static) {
+    CONFIG -= shared
+    QT_CONFIG += static jpeg gif
+    QT_CONFIG -= shared
+}
+
 #versioning
 QT_VERSION = $QT_VERSION
 QT_MAJOR_VERSION = $QT_MAJOR_VERSION
