@@ -54,6 +54,10 @@
 #include <QtCore/qatomic.h>
 #include <QtCore/qdatastream.h>
 
+#ifdef QT_STATIC
+#define PCRE_STATIC
+#endif
+
 #include <pcre.h>
 
 QT_BEGIN_NAMESPACE
