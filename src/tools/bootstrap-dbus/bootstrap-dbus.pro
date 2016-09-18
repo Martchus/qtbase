@@ -27,4 +27,4 @@ SOURCES = \
 load(qt_module)
 
 lib.CONFIG = dummy_install
-INSTALLS = lib
+INSTALLS += lib
