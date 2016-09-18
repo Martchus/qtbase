@@ -14,9 +14,14 @@ QMAKE_EXT_H             = .h .hpp .hh .hxx
 QMAKE_EXT_H_MOC         = .cpp
 QMAKE_EXT_JS            = .js
 QMAKE_EXT_LEX           = .l
-QMAKE_EXT_LIBTOOL       = .la
-QMAKE_EXT_PKGCONFIG     = .pc
-QMAKE_EXT_PRL           = .prl
+QMAKE_EXT_PKGCONFIG = .pc
+contains(CONFIG, static) {
+    QMAKE_EXT_LIBTOOL   = .static.la
+    QMAKE_EXT_PRL       = .static.prl
+} else {
+    QMAKE_EXT_LIBTOOL   = .la
+    QMAKE_EXT_PRL       = .prl
+}
 QMAKE_EXT_UI            = .ui
 QMAKE_EXT_YACC          = .y
 
