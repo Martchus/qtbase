@@ -58,6 +58,9 @@
             "label": "MySQL",
             "test": "unix/mysql",
             "sources": [
+                { "libs": "-lmariadbclient -lssl -lcrypto -lgdi32 -lws2_32 -lpthread -lz -lm", "condition": "config.win32 && !features.shared" },
+                { "libs": "-Wl,-Bdynamic -lmariadb -Wl,-Bstatic", "condition": "config.win32 && !features.shared" },
+                { "libs": "-lmariadb", "condition": "config.win32 && features.shared" },
                 { "type": "mysqlConfig", "query": "--libs_r" },
                 { "type": "mysqlConfig", "query": "--libs" },
                 { "libs": "-lmysqlclient_r", "condition": "!config.win32" },
