@@ -306,7 +306,11 @@
             },
             "headers": "harfbuzz/hb.h",
             "sources": [
-                "-lharfbuzz"
+                { "type": "pkgConfig", "args": "--static --libs harfbuzz", "condition": "!features.shared" },
+                { "type": "pkgConfig", "args": "--libs harfbuzz", "condition": "features.shared" },
+                { "libs": "-lharfbuzz  -lfreetype -lharfbuzz -lglib-2.0 -lintl -lws2_32 -lole32 -lwinmm -lshlwapi -lpcre -lintl -lpcre -lintl -liconv -lgraphite2 -lbz2", "condition": "!features.shared" },
+                { "libs": "-Wl,-Bdynamic -lharfbuzz -Wl,-Bstatic", "condition": "!features.shared" },
+                { "libs": "-lharfbuzz", "condition": "features.shared" }
             ]
         },
         "imf": {
