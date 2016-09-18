@@ -328,6 +328,9 @@ defineTest(qtConfTest_detectPkgConfig) {
             qtLog("Found pkg-config from path: $$pkgConfig")
         }
     }
+    !isEmpty(pkgConfig):qtConfig(static) {
+        pkgConfig = "$$pkgConfig --static"
+    }
 
     $$qtConfEvaluate("features.cross_compile") {
         # cross compiling, check that pkg-config is set up sanely
