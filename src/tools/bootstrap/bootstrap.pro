@@ -127,7 +127,7 @@ macx {
         ../../corelib/io/qstandardpaths_win.cpp
 }
 
-!qtConfig(system-zlib)|cross_compile {
+!qtConfig(system-zlib) {
     include(../../3rdparty/zlib.pri)
 } else {
     CONFIG += no_core_dep
