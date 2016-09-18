@@ -2,7 +2,7 @@
 !win32:error("$$_FILE_ is intended only for Windows!")
 
 TEMPLATE = lib
-TARGET = qtmain
+TARGET = qt5main
 DESTDIR = $$QT.core.libs
 
 CONFIG += static
