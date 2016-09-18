@@ -4,7 +4,14 @@
 # supposed to be influenced by -device-option then.
 host_build: return()
 
-DEVICE_PRI = $$[QT_HOST_DATA/get]/mkspecs/qdevice.pri
+shared|actually_a_shared_build {
+    DEVICE_PRI = $$[QT_HOST_DATA/get]/mkspecs/qdevice.pri
+} else {
+    DEVICE_PRI = $$[QT_HOST_DATA/get]/mkspecs/qdevice.static.pri
+    !exists($$DEVICE_PRI) {
+        DEVICE_PRI = $$[QT_HOST_DATA/get]/mkspecs/qdevice.pri
+    }
+}
 exists($$DEVICE_PRI):include($$DEVICE_PRI)
 unset(DEVICE_PRI)
 
