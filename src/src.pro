@@ -159,10 +159,6 @@ contains(QT_CONFIG, concurrent):SUBDIRS += src_concurrent
         SUBDIRS += src_3rdparty_harfbuzzng
         src_gui.depends += src_3rdparty_harfbuzzng
     }
-    win32:contains(QT_CONFIG, angle)|contains(QT_CONFIG, dynamicgl) {
-        SUBDIRS += src_angle
-        src_gui.depends += src_angle
-    }
     contains(QT_CONFIG, freetype) {
         SUBDIRS += src_3rdparty_freetype
         src_platformsupport.depends += src_3rdparty_freetype

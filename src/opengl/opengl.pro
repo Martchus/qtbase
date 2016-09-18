@@ -11,6 +11,7 @@ QMAKE_DOCS = $$PWD/doc/qtopengl.qdocconf
 
 contains(QT_CONFIG, opengl):CONFIG += opengl
 contains(QT_CONFIG, opengles2):CONFIG += opengles2
+win32:contains(QT_CONFIG, angle): LIBS_PRIVATE += -lGLESv2
 
 HEADERS += qgl.h \
            qgl_p.h \
