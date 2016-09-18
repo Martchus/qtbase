@@ -648,7 +648,12 @@ defineTest(qtConfOutput_machineTuple) {
 
 defineTest(qtConfOutput_commitOptions) {
     # qdevice.pri needs to be written early, because the compile tests require it.
-    write_file($$QT_BUILD_TREE/mkspecs/qdevice.pri, $${currentConfig}.output.devicePro)|error()
+    shared|actually_a_shared_build {
+        DEVICE_PRI_SUFFIX = .pri
+    } else {
+        DEVICE_PRI_SUFFIX = .static.pri
+    }
+    write_file($$QT_BUILD_TREE/mkspecs/qdevice$$DEVICE_PRI_SUFFIX, $${currentConfig}.output.devicePro)|error()
 }
 
 # type (empty or 'host'), option name, default value
@@ -1365,3 +1370,12 @@ defineTest(createConfigStatus) {
 
 QMAKE_POST_CONFIGURE += \
     "createConfigStatus()"
+
+# merge shared and static library trees
+contains(CONFIG, static) {
+    CONFIG -= shared
+    QT_CONFIG += static jpeg gif
+    QT_CONFIG -= shared
+    # prevent smart library merge from messing cyclic dependency between freetype2 and harfbuzz
+    CONFIG += no_smart_library_merge
+}
