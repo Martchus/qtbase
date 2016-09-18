@@ -1,5 +1,16 @@
 # This file is loaded by qmake right after loading the actual project file.
 
+win32:contains(CONFIG, static) {
+    # Ensure defines are set correctly for static build
+    DEFINES -= QT_SHARED
+    DEFINES *= QT_STATIC QT_DESIGNER_STATIC
+    contains(QT_CONFIG, angle): DEFINES *= QT_OPENGL_ES_2_ANGLE_STATIC
+    # Ensure we link against all dependencies statically
+    QMAKE_LFLAGS += -static -static-libstdc++ -static-libgcc
+    # Prevent qmake from finding the prl file for shared libs
+    QMAKE_EXT_PRL = .static.prl
+}
+
 contains(TEMPLATE, ".*(lib|app)"):CONFIG += have_target
 
 !have_target:!force_qt: CONFIG -= qt
