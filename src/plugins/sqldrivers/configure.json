@@ -88,9 +88,9 @@
             },
             "headers": "libpq-fe.h",
             "sources": [
-                { "type": "pkgConfig", "args": "libpq" },
                 { "type": "psqlConfig" },
-                { "type": "psqlEnv", "libs": "-llibpq -lws2_32 -ladvapi32", "condition": "config.win32" },
+                { "type": "psqlEnv", "libs": "-lpq -lintl -lssl -lcrypto -lshell32 -lws2_32 -lsecur32 -liconv", "condition": "config.win32 && !features.shared" },
+                { "type": "psqlEnv", "libs": "-lpq", "condition": "config.win32 && features.shared" },
                 { "type": "psqlEnv", "libs": "-lpq", "condition": "!config.win32" }
             ]
         },
