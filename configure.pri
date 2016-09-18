@@ -1212,3 +1212,10 @@ defineTest(createConfigStatus) {
 
 QMAKE_POST_CONFIGURE += \
     "createConfigStatus()"
+
+# merge shared and static library trees
+contains(CONFIG, static) {
+    CONFIG -= shared
+    QT_CONFIG += static jpeg gif
+    QT_CONFIG -= shared
+}
