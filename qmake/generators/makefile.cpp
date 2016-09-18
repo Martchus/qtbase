@@ -1019,10 +1019,18 @@ MakefileGenerator::writePrlFile(QTextStream &t)
             libs << "LIBS" << "QMAKE_LIBS";
         else
             libs << "LIBS" << "LIBS_PRIVATE" << "QMAKE_LIBS" << "QMAKE_LIBS_PRIVATE";
-        t << "QMAKE_PRL_LIBS =";
-        for (ProStringList::Iterator it = libs.begin(); it != libs.end(); ++it)
-            t << qv(project->values((*it).toKey()));
-        t << endl;
+        QStringList libNames;
+        QStringList libNamesCMake;
+        for (const auto &lib : libs) {
+            for (const auto &libName : project->values(lib.toKey())) {
+                libNames << QMakeEvaluator::quoteValue(libName);
+                QString libNameCMake(libName.toQString());
+                libNameCMake.replace(QChar('\\'), QLatin1String("\\\\"));
+                libNamesCMake << libNameCMake;
+            }
+        }
+        t << "QMAKE_PRL_LIBS = " << libNames.join(QChar(' ')) << endl;
+        t << "QMAKE_PRL_LIBS_FOR_CMAKE = " << libNamesCMake.join(QChar(';')) << endl;
     }
 }
 
