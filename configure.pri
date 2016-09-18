@@ -555,3 +555,10 @@ QMAKE_POST_CONFIGURE += \
 
 # load and process input from configure.sh/.exe
 include($$shadowed($$PWD)/config.tests/configure.cfg)
+
+# merge shared and static library trees
+contains(CONFIG, static) {
+    CONFIG -= shared
+    QT_CONFIG += static jpeg gif
+    QT_CONFIG -= shared
+}
