@@ -25,7 +25,7 @@ requires(!$$skip)
 
 # Compile as shared/DLL or static according to the option given to configure
 # unless overridden. Host builds are always static
-host_build|staticlib: CONFIG += static
+staticlib: CONFIG += static
 
 host_build {
     QT -= gui   # no host module will ever use gui
