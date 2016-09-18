@@ -120,3 +120,11 @@ c++11|c++14|c++1z {
 
 QMAKE_INCDIR += $$QMAKE_INCDIR_POST
 QMAKE_LIBDIR += $$QMAKE_LIBDIR_POST
+
+win32:contains(CONFIG, static) {
+    DEFINES += QT_STATIC QT_DESIGNER_STATIC
+    DEFINES -= QT_SHARED
+    contains(QT_CONFIG, angle): DEFINES += QT_OPENGL_ES_2_ANGLE_STATIC
+    QMAKE_LFLAGS += -static -static-libstdc++ -static-libgcc
+    QMAKE_EXT_PRL=.static.prl # prevents qmake from finding the prl file for shared libs
+}

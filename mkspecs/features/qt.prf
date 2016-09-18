@@ -150,6 +150,18 @@ for(ever) {
             !isEmpty(MODULE_WINRT_CAPABILITIES_DEVICE): \
                 WINRT_MANIFEST.capabilities_device_default += $$MODULE_WINRT_CAPABILITIES_DEVICE
         }
+
+        win32:CONFIG(static) {
+            isEqual(MODULE_NAME, QtCore) {
+                LIBS$$var_sfx += $$QMAKE_LIBS_CORE
+            } else:isEqual(MODULE_NAME, QtGui) {
+                LIBS$$var_sfx += $$QMAKE_LIBS_GUI
+            } else:isEqual(MODULE_NAME, QtNetwork) {
+                LIBS$$var_sfx += $$QMAKE_LIBS_NETWORK
+            } else:isEqual(MODULE_NAME, QtOpenGL) {
+                LIBS$$var_sfx += $$QMAKE_LIBS_OPENGL
+            }
+        }
     }
     !isEmpty(BAD_QT):error("Unknown module(s) in QT$$var_sfx: $$replace(BAD_QT, _private$, -private)")
 
