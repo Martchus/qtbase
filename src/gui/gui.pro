@@ -18,12 +18,6 @@ MODULE_PLUGIN_TYPES = \
     imageformats \
     egldeviceintegrations
 
-# This is here only because the platform plugin is no module, obviously.
-qtConfig(angle) {
-    MODULE_AUX_INCLUDES = \
-        \$\$QT_MODULE_INCLUDE_BASE/QtANGLE
-}
-
 # Code coverage with TestCocoon
 # The following is required as extra compilers use $$QMAKE_CXX instead of $(CXX).
 # Without this, testcocoon.prf is read only after $$QMAKE_CXX is used by the
@@ -33,6 +27,8 @@ testcocoon {
 }
 
 osx: LIBS_PRIVATE += -framework AppKit
+
+win32:qtConfig(angle): LIBS_PRIVATE += -lGLESv2
 
 CONFIG += simd optimize_full
 
