@@ -56,9 +56,7 @@
 
 //#define Q_ENABLE_OPENGL_FUNCTIONS_DEBUG
 
-#ifdef QT_OPENGL_ES
 typedef double GLdouble;
-#endif
 
 #ifdef Q_ENABLE_OPENGL_FUNCTIONS_DEBUG
 #include <stdio.h>
