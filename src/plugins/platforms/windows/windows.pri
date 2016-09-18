@@ -4,6 +4,7 @@ LIBS += -lole32 -luser32 -lwinspool -limm32 -lwinmm -loleaut32
 QT_FOR_CONFIG += gui
 
 qtConfig(opengl):!qtConfig(opengles2):!qtConfig(dynamicgl): LIBS *= -lopengl32
+qtConfig(angle):LIBS += -lGLESv2 -lEGL
 
 mingw: LIBS *= -luuid
 # For the dialog helpers:
