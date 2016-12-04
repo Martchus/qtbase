@@ -153,8 +153,9 @@ function(qt5_create_moc_command infile outfile moc_flags moc_options moc_target 
     endif()
 
     set(_moc_extra_parameters_file @${_moc_parameters_file})
+    get_target_property(MOC_LOC ${Qt5Core_MOC_EXECUTABLE} IMPORTED_LOCATION)
     add_custom_command(OUTPUT ${outfile}
-                       COMMAND ${Qt5Core_MOC_EXECUTABLE} ${_moc_extra_parameters_file}
+                       COMMAND ${MOC_LOC} ${_moc_extra_parameters_file}
                        DEPENDS ${infile} ${moc_depends}
                        ${_moc_working_dir}
                        VERBATIM)
@@ -295,8 +296,9 @@ function(qt5_add_binary_resources target)
         set(rc_depends ${rc_depends} ${_rc_depends})
     endforeach()
 
+    get_target_property(RCC_LOC ${Qt5Core_RCC_EXECUTABLE} IMPORTED_LOCATION)
     add_custom_command(OUTPUT ${rcc_destination}
-                       COMMAND ${Qt5Core_RCC_EXECUTABLE}
+                       COMMAND ${RCC_LOC}
                        ARGS ${rcc_options} --binary --name ${target} --output ${rcc_destination} ${infiles}
                        DEPENDS ${rc_depends} ${out_depends} ${infiles} VERBATIM)
     add_custom_target(${target} ALL DEPENDS ${rcc_destination})
@@ -339,8 +341,9 @@ function(qt5_add_resources outfiles)
         _qt5_parse_qrc_file(${infile} _out_depends _rc_depends)
         set_source_files_properties(${infile} PROPERTIES SKIP_AUTORCC ON)
 
+        get_target_property(MOC_LOC ${Qt5Core_RCC_EXECUTABLE} IMPORTED_LOCATION)
         add_custom_command(OUTPUT ${outfile}
-                           COMMAND ${Qt5Core_RCC_EXECUTABLE}
+                           COMMAND ${MOC_LOC}
                            ARGS ${rcc_options} --name ${outfilename} --output ${outfile} ${infile}
                            MAIN_DEPENDENCY ${infile}
                            DEPENDS ${_rc_depends} "${_out_depends}" VERBATIM)
