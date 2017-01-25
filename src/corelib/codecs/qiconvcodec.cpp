@@ -49,7 +49,6 @@ QT_REQUIRE_CONFIG(iconv);
 #include <errno.h>
 #include <locale.h>
 #include <stdio.h>
-#include <dlfcn.h>
 
 // unistd.h is needed for the _XOPEN_UNIX macro
 #include <unistd.h>
@@ -182,7 +181,7 @@ QString QIconvCodec::convertToUnicode(const char* chars, int len, ConverterState
     IconvState *state = *pstate;
     size_t inBytesLeft = len;
     // best case assumption, each byte is converted into one UTF-16 character, plus 2 bytes for the BOM
-#if !QT_CONFIG(posix_libiconv)
+#if !QT_CONFIG(posix_libiconv) && !defined(Q_OS_WIN)
     // GNU doesn't disagree with POSIX :/
     const char *inBytes = chars;
 #else
@@ -281,7 +280,7 @@ static bool setByteOrder(iconv_t cd)
     size_t outBytesLeft = sizeof buf;
     size_t inBytesLeft = sizeof bom;
 
-#if !QT_CONFIG(posix_libiconv)
+#if !QT_CONFIG(posix_libiconv) && !defined(Q_OS_WIN)
     const char **inBytesPtr = const_cast<const char **>(&inBytes);
 #else
     char **inBytesPtr = &inBytes;
@@ -303,7 +302,7 @@ QByteArray QIconvCodec::convertFromUnicode(const QChar *uc, int len, ConverterSt
     char *outBytes;
     size_t inBytesLeft;
 
-#if !QT_CONFIG(posix_libiconv)
+#if !QT_CONFIG(posix_libiconv) && !defined(Q_OS_WIN)
     const char **inBytesPtr = const_cast<const char **>(&inBytes);
 #else
     char **inBytesPtr = &inBytes;
