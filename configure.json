@@ -755,7 +755,6 @@
         "pkg-config": {
             "label": "Using pkg-config",
             "autoDetect": "!config.darwin && !config.win32",
-            "condition": "tests.pkg-config",
             "output": [
                 "publicFeature",
                 { "type": "publicQtConfig", "negative": true },
