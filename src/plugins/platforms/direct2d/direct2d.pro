@@ -1,12 +1,32 @@
 TARGET = qdirect2d
 
 QT += \
-    core-private gui-private \
-    eventdispatcher_support-private \
-    fontdatabase_support-private theme_support-private
+    core-private gui-private
 
-qtConfig(accessibility): QT += accessibility_support-private
-qtConfig(vulkan): QT += vulkan_support-private
+# Fix linker error when building libqdirect2d.dll by specifying linker flags for
+# required modules manually (otherwise order is messed)
+LIBS += \
+    -lQt5EventDispatcherSupport \
+    -lQt5FontDatabaseSupport \
+    -lQt5ThemeSupport \
+    -lfreetype -lole32 -lgdi32 -luuid
+# However, this workaround leads to the necessity of specifying include dirs manually
+INCLUDEPATH += \
+    $$QT_SOURCE_TREE/include/QtEventDispatcherSupport/$${QT_VERSION} \
+    $$QT_SOURCE_TREE/include/QtFontDatabaseSupport/$${QT_VERSION} \
+    $$QT_SOURCE_TREE/include/QtThemeSupport/$${QT_VERSION}
+# Same for private support libs for accessibility and vulkan, if those are enabled
+qtConfig(accessibility) {
+    LIBS += -lQt5AccessibilitySupport
+    INCLUDEPATH += $$QT_SOURCE_TREE/include/QtAccessibilitySupport/$${QT_VERSION}
+}
+qtConfig(vulkan) {
+    LIBS += -lQt5VulkanSupport
+    INCLUDEPATH += $$QT_SOURCE_TREE/include/QtVulkanSupport/$${QT_VERSION}
+}
+# Also add Qt5WindowsUIAutomationSupport - it seems to link against it
+LIBS += -lQt5WindowsUIAutomationSupport
+INCLUDEPATH += $$QT_SOURCE_TREE/include/Qt5WindowsUIAutomationSupport/$${QT_VERSION}
 
 LIBS += -ldwmapi -lversion -lgdi32
 QMAKE_USE_PRIVATE += dwrite_1 d2d1_1 d3d11_1 dxgi1_2
