@@ -1,11 +1,22 @@
 TARGET = qwindows
 
 QT += \
-    core-private gui-private \
-    eventdispatcher_support-private accessibility_support-private \
-    fontdatabase_support-private theme_support-private
+    core-private gui-private
 
-LIBS += -lgdi32 -ldwmapi
+# Fix linker error when building libqwindows.dll by specifying linker flags for
+# required modules manually (otherwise order is messed)
+LIBS += \
+    -lQt5EventDispatcherSupport \
+    -lQt5AccessibilitySupport \
+    -lQt5FontDatabaseSupport \
+    -lQt5ThemeSupport \
+    -lfreetype -lole32 -lgdi32 -ldwmapi
+# However, this workaround leads to the necessity of specifying include dirs manually
+INCLUDEPATH += \
+    $$QT_SOURCE_TREE/include/QtEventDispatcherSupport/$${QT_VERSION} \
+    $$QT_SOURCE_TREE/include/QtAccessibilitySupport/$${QT_VERSION} \
+    $$QT_SOURCE_TREE/include/QtFontDatabaseSupport/$${QT_VERSION} \
+    $$QT_SOURCE_TREE/include/QtThemeSupport/$${QT_VERSION}
 
 include(windows.pri)
 
