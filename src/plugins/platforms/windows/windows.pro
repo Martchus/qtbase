@@ -1,14 +1,28 @@
 TARGET = qwindows
 
-QT += \
-    core-private gui-private \
-    eventdispatcher_support-private \
-    fontdatabase_support-private theme_support-private
+QT += core-private gui-private
 
-qtConfig(accessibility): QT += accessibility_support-private
-qtConfig(vulkan): QT += vulkan_support-private
-
-LIBS += -lgdi32 -ldwmapi
+# Fix linker error when building libqwindows.dll by specifying linker flags for
+# required modules manually (otherwise order is messed)
+LIBS += \
+    $$QT_BUILD_TREE/lib/$${QMAKE_PREFIX_STATICLIB}Qt5EventDispatcherSupport.$${QMAKE_EXTENSION_STATICLIB} \
+    $$QT_BUILD_TREE/lib/$${QMAKE_PREFIX_STATICLIB}Qt5FontDatabaseSupport.$${QMAKE_EXTENSION_STATICLIB} \
+    $$QT_BUILD_TREE/lib/$${QMAKE_PREFIX_STATICLIB}Qt5ThemeSupport.$${QMAKE_EXTENSION_STATICLIB} \
+    -lfreetype -lole32 -lgdi32 -ldwmapi
+# However, this workaround leads to the necessity of specifying include dirs manually
+INCLUDEPATH += \
+    $$QT_SOURCE_TREE/include/QtEventDispatcherSupport/$${QT_VERSION} \
+    $$QT_SOURCE_TREE/include/QtFontDatabaseSupport/$${QT_VERSION} \
+    $$QT_SOURCE_TREE/include/QtThemeSupport/$${QT_VERSION}
+# Same for private support libs for accessibility and vulkan, if those are enabled
+qtConfig(accessibility) {
+    LIBS += $$QT_BUILD_TREE/lib/$${QMAKE_PREFIX_STATICLIB}Qt5AccessibilitySupport.$${QMAKE_EXTENSION_STATICLIB}
+    INCLUDEPATH += $$QT_SOURCE_TREE/include/QtAccessibilitySupport/$${QT_VERSION}
+}
+qtConfig(vulkan) {
+    LIBS += $$QT_BUILD_TREE/lib/$${QMAKE_PREFIX_STATICLIB}Qt5VulkanSupport.$${QMAKE_EXTENSION_STATICLIB}
+    INCLUDEPATH += $$QT_SOURCE_TREE/include/QtVulkanSupport/$${QT_VERSION}
+}
 
 include(windows.pri)
 
