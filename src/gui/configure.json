@@ -399,8 +399,10 @@
                 { "type": "pkgConfig", "args": "libpng" },
                 { "libs": "-llibpng16", "condition": "config.msvc" },
                 { "libs": "-llibpng", "condition": "config.msvc" },
-                { "libs": "-lpng16", "condition": "!config.msvc" },
-                { "libs": "-lpng", "condition": "!config.msvc" },
+                { "libs": "-lpng16 -lz", "condition": "!config.msvc && !features.shared" },
+                { "libs": "-lpng -lz", "condition": "!config.msvc && !features.shared" },
+                { "libs": "-lpng16", "condition": "!config.msvc && features.shared" },
+                { "libs": "-lpng", "condition": "!config.msvc && features.shared" },
                 { "libs": "-s USE_LIBPNG=1", "condition": "config.wasm" }
             ],
             "use": [
