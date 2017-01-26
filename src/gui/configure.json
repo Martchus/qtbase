@@ -161,7 +161,8 @@
             "sources": [
                 { "type": "pkgConfig", "args": "libpng" },
                 { "libs": "-llibpng", "condition": "config.msvc" },
-                { "libs": "-lpng", "condition": "!config.msvc" }
+                { "libs": "-lpng -lz", "condition": "!config.msvc && !features.shared" },
+                { "libs": "-lpng", "condition": "!config.msvc && features.shared" }
             ]
         },
         "mirclient": {
