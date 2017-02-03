@@ -158,12 +158,16 @@
             "sources": [
                 { "type": "pkgConfig", "args": "dbus-1 >= 1.2" },
                 {
+                    "libs": "-ldbus-1 -lws2_32 -liphlpapi",
+                    "condition": "config.win32 && !features.shared"
+                },
+                {
                     "libs": "",
                     "builds": {
                         "debug": "-ldbus-1d",
                         "release": "-ldbus-1"
                     },
-                    "condition": "config.win32"
+                    "condition": "config.win32 && features.shared"
                 },
                 { "libs": "-ldbus-1", "condition": "!config.win32" }
             ]
