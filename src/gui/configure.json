@@ -238,8 +238,11 @@
             },
             "headers": "ft2build.h",
             "sources": [
-                { "type": "pkgConfig", "args": "freetype2" },
-                { "type": "freetype", "libs": "-lfreetype", "condition": "!config.wasm" },
+                { "type": "pkgConfig", "args": "--static --libs freetype2", "condition": "!features.shared" },
+                { "type": "pkgConfig", "args": "--libs freetype2", "condition": "features.shared" },
+                { "libs": "-lfreetype -lharfbuzz -lfreetype -lglib-2.0 -lintl -lws2_32 -lole32 -lwinmm -lshlwapi -lpcre -lintl -lpcre -lintl -liconv -lgraphite2 -lbz2", "condition": "!features.shared && !config.wasm" },
+                { "libs": "-Wl,-Bdynamic -lfreetype -Wl,-Bstatic", "condition": "!features.shared && !config.wasm" },
+                { "libs": "-lfreetype", "condition": "features.shared && !config.wasm" },
                 { "libs": "-s USE_FREETYPE=1", "condition": "config.wasm" },
                 { "libs": "-lfreetype" }
             ],
