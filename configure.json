@@ -188,18 +188,23 @@
         "dbus": {
             "label": "D-Bus >= 1.2",
             "test": {
-                "main": "(void) dbus_bus_get_private(DBUS_BUS_SYSTEM, (DBusError *)NULL);"
+                "main": "(void) dbus_bus_get_private(DBUS_BUS_SYSTEM, (DBusError *)NULL);",
+                "qmake": "static: DEFINES += DBUS_STATIC_BUILD"
             },
             "headers": "dbus/dbus.h",
             "sources": [
                 { "type": "pkgConfig", "args": "dbus-1 >= 1.2" },
+                {
+                    "libs": "-ldbus-1 -lws2_32 -liphlpapi",
+                    "condition": "config.win32 && !features.shared"
+                },
                 {
                     "libs": "",
                     "builds": {
                         "debug": "-ldbus-1d",
                         "release": "-ldbus-1"
                     },
-                    "condition": "config.win32"
+                    "condition": "config.win32 && features.shared"
                 },
                 { "libs": "-ldbus-1", "condition": "!config.win32" }
             ]
