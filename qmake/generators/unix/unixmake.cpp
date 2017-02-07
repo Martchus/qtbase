@@ -391,6 +391,9 @@ UnixMakefileGenerator::fixLibFlag(const ProString &lib)
 bool
 UnixMakefileGenerator::findLibraries(bool linkPrl, bool mergeLflags)
 {
+    if(project->isActiveConfig("staticlib")) {
+        return false; // prevent qmake from messing static lib dependencies
+    }
     QVector<QMakeLocalFileName> libdirs, frameworkdirs;
     int libidx = 0, fwidx = 0;
     for (const ProString &dlib : project->values("QMAKE_DEFAULT_LIBDIRS"))
