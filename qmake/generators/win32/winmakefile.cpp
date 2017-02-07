@@ -87,6 +87,9 @@ Win32MakefileGenerator::findLibraries(bool linkPrl, bool mergeLflags)
     impexts.append(project->values("QMAKE_EXTENSION_IMPORTLIB"));
     impexts.append(project->values("QMAKE_EXTENSION_STATICLIB"));
   }
+  if(project->isActiveConfig("staticlib")) {
+    return false; // prevent qmake from messing static lib dependencies
+  }
   QList<QMakeLocalFileName> dirs;
   static const char * const lflags[] = { "QMAKE_LIBS", "QMAKE_LIBS_PRIVATE", 0 };
   for (int i = 0; lflags[i]; i++) {
