@@ -179,3 +179,10 @@ if (ANDROID_PLATFORM)
 endif()
 
 _qt5_Core_check_file_exists(${_Qt5CTestMacros})
+
+!!IF !isEmpty(CMAKE_STATIC_WINDOWS_BUILD)
+set(_isExe $<STREQUAL:$<TARGET_PROPERTY:TYPE>,EXECUTABLE>)
+# INTERFACE_LINK_LIBRARIES is used to pass a linker flag '-static' and library ws2_32
+set_target_properties(${IMPORTED_TARGET_NAME} PROPERTIES \"INTERFACE_LINK_LIBRARIES\" \"$<${_isExe}:-static;ws2_32>\")
+unset(_isExe)
+!!ENDIF
