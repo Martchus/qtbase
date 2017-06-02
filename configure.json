@@ -201,7 +201,7 @@
                 {
                     "libs": "",
                     "builds": {
-                        "debug": "-ldbus-1d",
+                        "debug": "-ldbus-1",
                         "release": "-ldbus-1"
                     },
                     "condition": "config.win32 && features.shared"
