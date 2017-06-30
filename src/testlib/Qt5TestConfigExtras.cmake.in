@@ -1,9 +1,5 @@
 
-!!IF !isEmpty(CMAKE_STATIC_TYPE)
-set_property(TARGET StaticQt5::Test
-!!ELSE
-set_property(TARGET Qt5::Test
-!!ENDIF
+set_property(TARGET $${VAR_PREFIX}Qt5::Test
   APPEND PROPERTY
     INTERFACE_COMPILE_DEFINITIONS QT_TESTCASE_BUILDDIR=\\\"\${CMAKE_BINARY_DIR}\\\"
 )

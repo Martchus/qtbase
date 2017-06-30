@@ -38,8 +38,7 @@ split_incpath {
             $$QT_MODULE_INCLUDE_BASE/Qt$${CMAKE_MODULE_NAME}/$$eval(QT.$${MODULE}.VERSION)/Qt$${CMAKE_MODULE_NAME})
 
     cmake_extra_source_includes.input = $$PWD/data/cmake/ExtraSourceIncludes.cmake.in
-    isEmpty(CMAKE_STATIC_TYPE): cmake_extra_source_includes.output = $$CMAKE_OUT_DIR/Qt5$${CMAKE_MODULE_NAME}/ExtraSourceIncludes.cmake
-    else: cmake_extra_source_includes.output = $$CMAKE_OUT_DIR/StaticQt5$${CMAKE_MODULE_NAME}/ExtraSourceIncludes.cmake
+    cmake_extra_source_includes.output = $$CMAKE_OUT_DIR/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}/ExtraSourceIncludes.cmake
 
     !build_pass:QMAKE_SUBSTITUTES += \
         cmake_extra_source_includes
@@ -166,15 +165,13 @@ contains(CONFIG, plugin) {
         }
     }
     cmake_target_file.input = $$PWD/data/cmake/Qt5PluginTarget.cmake.in
-    isEmpty(CMAKE_STATIC_TYPE): cmake_target_file.output = $$CMAKE_OUT_DIR/Qt5$${CMAKE_MODULE_NAME}/Qt5$${CMAKE_MODULE_NAME}_$${PLUGIN_CLASS_NAME}.cmake
-    else: cmake_target_file.output = $$CMAKE_OUT_DIR/StaticQt5$${CMAKE_MODULE_NAME}/StaticQt5$${CMAKE_MODULE_NAME}_$${PLUGIN_CLASS_NAME}.cmake
+    cmake_target_file.output = $$CMAKE_OUT_DIR/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}_$${PLUGIN_CLASS_NAME}.cmake
 
     !build_pass:QMAKE_SUBSTITUTES += \
       cmake_target_file
 
     cmake_qt5_plugin_file.files = $$cmake_target_file.output
-    isEmpty(CMAKE_STATIC_TYPE): cmake_qt5_plugin_file.path = $$[QT_INSTALL_LIBS]/cmake/Qt5$${CMAKE_MODULE_NAME}
-    else: cmake_qt5_plugin_file.path = $$[QT_INSTALL_LIBS]/cmake/StaticQt5$${CMAKE_MODULE_NAME}
+    cmake_qt5_plugin_file.path = $$[QT_INSTALL_LIBS]/cmake/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}
     INSTALLS += cmake_qt5_plugin_file
 
     return()
@@ -290,14 +287,12 @@ mac {
 INSTALLS += cmake_qt5_module_files
 
 cmake_config_file.input = $$PWD/data/cmake/Qt5BasicConfig.cmake.in
-isEmpty(CMAKE_STATIC_TYPE): cmake_config_file.output = $$CMAKE_OUT_DIR/Qt5$${CMAKE_MODULE_NAME}/Qt5$${CMAKE_MODULE_NAME}Config.cmake
-else: cmake_config_file.output = $$CMAKE_OUT_DIR/StaticQt5$${CMAKE_MODULE_NAME}/StaticQt5$${CMAKE_MODULE_NAME}Config.cmake
+cmake_config_file.output = $$CMAKE_OUT_DIR/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}Config.cmake
 
 CMAKE_PACKAGE_VERSION = $$eval(QT.$${MODULE}.VERSION)
 
 cmake_config_version_file.input = $$PWD/data/cmake/Qt5ConfigVersion.cmake.in
-isEmpty(CMAKE_STATIC_TYPE): cmake_config_version_file.output = $$CMAKE_OUT_DIR/Qt5$${CMAKE_MODULE_NAME}/Qt5$${CMAKE_MODULE_NAME}ConfigVersion.cmake
-else: cmake_config_version_file.output = $$CMAKE_OUT_DIR/StaticQt5$${CMAKE_MODULE_NAME}/StaticQt5$${CMAKE_MODULE_NAME}ConfigVersion.cmake
+cmake_config_version_file.output = $$CMAKE_OUT_DIR/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}ConfigVersion.cmake
 
 !build_pass:QMAKE_SUBSTITUTES += \
     cmake_config_file \
@@ -311,8 +306,7 @@ cmake_extras_file.input = $$_PRO_FILE_PWD_/Qt5$${CMAKE_MODULE_NAME}ConfigExtras.
 exists($$cmake_extras_file.input) {
 
     CMAKE_MODULE_EXTRAS = "true"
-    isEmpty(CMAKE_STATIC_TYPE): cmake_extras_file.output = $$CMAKE_OUT_DIR/Qt5$${CMAKE_MODULE_NAME}/Qt5$${CMAKE_MODULE_NAME}ConfigExtras.cmake
-    else: cmake_extras_file.output = $$CMAKE_OUT_DIR/StaticQt5$${CMAKE_MODULE_NAME}/StaticQt5$${CMAKE_MODULE_NAME}ConfigExtras.cmake
+    cmake_extras_file.output = $$CMAKE_OUT_DIR/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}ConfigExtras.cmake
 
     !build_pass:QMAKE_SUBSTITUTES += cmake_extras_file
 
@@ -324,8 +318,7 @@ cmake_macros_file.input = $$_PRO_FILE_PWD_/Qt5$${CMAKE_MODULE_NAME}Macros.cmake
 exists($$cmake_macros_file.input) {
     CMAKE_MODULE_MACROS = "true"
 
-    isEmpty(CMAKE_STATIC_TYPE): cmake_macros_file.output = $$CMAKE_OUT_DIR/Qt5$${CMAKE_MODULE_NAME}/Qt5$${CMAKE_MODULE_NAME}Macros.cmake
-    else: cmake_macros_file.output = $$CMAKE_OUT_DIR/StaticQt5$${CMAKE_MODULE_NAME}/StaticQt5$${CMAKE_MODULE_NAME}Macros.cmake
+    cmake_macros_file.output = $$CMAKE_OUT_DIR/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}Macros.cmake
     cmake_macros_file.CONFIG = verbatim
 
     !build_pass:QMAKE_SUBSTITUTES += cmake_macros_file
@@ -333,8 +326,7 @@ exists($$cmake_macros_file.input) {
     cmake_qt5_module_files.files += $$cmake_macros_file.output
 }
 
-isEmpty(CMAKE_STATIC_TYPE): cmake_qt5_module_files.path = $$[QT_INSTALL_LIBS]/cmake/Qt5$${CMAKE_MODULE_NAME}
-else: cmake_qt5_module_files.path = $$[QT_INSTALL_LIBS]/cmake/StaticQt5$${CMAKE_MODULE_NAME}
+cmake_qt5_module_files.path = $$[QT_INSTALL_LIBS]/cmake/$${VAR_PREFIX}Qt5$${CMAKE_MODULE_NAME}
 
 # We are generating cmake files. Most developers of Qt are not aware of cmake,
 # so we require automatic tests to be available. The only module which should
