@@ -263,7 +263,7 @@ for(ever) {
             } else:isEqual(MODULE_NAME, QtGui) {
                 LIBS$$var_sfx += $$QMAKE_LIBS_GUI
             } else:isEqual(MODULE_NAME, QtNetwork) {
-                LIBS$$var_sfx += $$QMAKE_LIBS_NETWORK
+                LIBS$$var_sfx += $$QMAKE_LIBS_NETWORK_STATIC $$QMAKE_LIBS_NETWORK
             } else:isEqual(MODULE_NAME, QtDBus) {
                 LIBS$$var_sfx += $$QMAKE_LIBS_DBUS
             } else:isEqual(MODULE_NAME, QtOpenGL) {
