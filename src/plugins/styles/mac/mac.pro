@@ -14,6 +14,8 @@ LIBS_PRIVATE += -framework AppKit
 
 DISTFILES += macstyle.json
 
+DEFINES += NS_BUILD_32_LIKE_64
+
 PLUGIN_TYPE = styles
 PLUGIN_CLASS_NAME = QMacStylePlugin
 load(qt_plugin)
