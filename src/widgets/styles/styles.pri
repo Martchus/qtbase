@@ -43,6 +43,7 @@ qtConfig(style-mac) {
         styles/qmacstyle_mac_p_p.h
     OBJECTIVE_SOURCES += styles/qmacstyle_mac.mm
     LIBS_PRIVATE += -framework Carbon
+    DEFINES += NS_BUILD_32_LIKE_64
 }
 
 qtConfig(style-windowsvista) {

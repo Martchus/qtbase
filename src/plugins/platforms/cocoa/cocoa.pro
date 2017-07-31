@@ -104,6 +104,8 @@ qtHaveModule(widgets) {
     QT += widgets-private printsupport-private
 }
 
+DEFINES += NS_BUILD_32_LIKE_64
+
 OTHER_FILES += cocoa.json
 
 # Acccessibility debug support
