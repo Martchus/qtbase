@@ -1,0 +1,11 @@
+# "redirect" to static package overriding variant prefix so it does not contain "Static" anymore
+set(ORIGINAL_OVERRIDE_QT_VARIANT_PREFIX "${OVERRIDE_QT_VARIANT_PREFIX}")
+if(OVERRIDE_QT_VARIANT_PREFIX)
+    string(REPLACE \"Static\" \"\" OVERRIDE_QT_VARIANT_PREFIX "${OVERRIDE_QT_VARIANT_PREFIX}")
+endif()
+if(NOT OVERRIDE_QT_VARIANT_PREFIX)
+    set(OVERRIDE_QT_VARIANT_PREFIX "none")
+endif()
+find_package(StaticQt5$${CMAKE_MODULE_NAME})
+set(OVERRIDE_QT_VARIANT_PREFIX "${ORIGINAL_OVERRIDE_QT_VARIANT_PREFIX}")
+
