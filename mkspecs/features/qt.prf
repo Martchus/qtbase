@@ -282,7 +282,7 @@ contains(all_qt_module_deps, qml): \
     #message(run $$QMLIMPORTSCANNER $$_PRO_FILE_PWD_  $$IMPORTPATHS)
     JSON = $$system($$QMLIMPORTSCANNER $$system_quote($$_PRO_FILE_PWD_) $$IMPORTPATHS)
 
-    parseJson(JSON, IMPORTS)| error("Failed to parse qmlimportscanner output.")
+    parseJson(JSON, IMPORTS)#| error("Failed to parse qmlimportscanner output.")
 
     !isEmpty(IMPORTS._KEYS_) {
         # add import plugins to LIBS line
