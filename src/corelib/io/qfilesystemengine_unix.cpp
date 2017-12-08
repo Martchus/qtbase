@@ -95,7 +95,7 @@ static int renameat2(int oldfd, const char *oldpath, int newfd, const char *newp
 { return syscall(SYS_renameat2, oldfd, oldpath, newfd, newpath, flags); }
 #  endif
 
-#  if !QT_CONFIG(statx) && defined(SYS_statx) && QT_HAS_INCLUDE(<linux/stat.h>)
+#  if 0
 #    include <linux/stat.h>
 static int statx(int dirfd, const char *pathname, int flag, unsigned mask, struct statx *statxbuf)
 { return syscall(SYS_statx, dirfd, pathname, flag, mask, statxbuf); }
