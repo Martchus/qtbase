@@ -90,7 +90,7 @@ DECLSPEC_IMPORT BOOLEAN WINAPI SystemFunction036(PVOID RandomBuffer, ULONG Rando
 
 QT_BEGIN_NAMESPACE
 
-#if defined(Q_PROCESSOR_X86) && QT_COMPILER_SUPPORTS_HERE(RDRND)
+#if defined(Q_PROCESSOR_X86_64) && QT_COMPILER_SUPPORTS_HERE(RDRND)
 static qsizetype qt_random_cpu(void *buffer, qsizetype count) Q_DECL_NOTHROW;
 
 #  ifdef Q_PROCESSOR_X86_64
