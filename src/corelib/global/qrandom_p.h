@@ -81,7 +81,7 @@ enum { qt_randomdevice_control = 0 };
 
 inline bool qt_has_hwrng()
 {
-#if defined(Q_PROCESSOR_X86) && QT_COMPILER_SUPPORTS_HERE(RDRND)
+#if defined(Q_PROCESSOR_X86_64) && QT_COMPILER_SUPPORTS_HERE(RDRND)
     return qCpuHasFeature(RDRND);
 #else
     return false;
