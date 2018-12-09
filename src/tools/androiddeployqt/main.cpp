@@ -1721,7 +1721,7 @@ bool scanImports(Options *options, QSet<QString> *usedDependencies)
         rootPath += QLatin1Char('/');
 
     QStringList importPaths;
-    importPaths += shellQuote(options->qtInstallDirectory + QLatin1String("/qml"));
+    importPaths += shellQuote(options->qtInstallDirectory + QLatin1String("/lib/qt/qml"));
     importPaths += shellQuote(rootPath);
     for (const QString &qmlImportPath : qAsConst(options->qmlImportPaths))
         importPaths += shellQuote(qmlImportPath);
@@ -1852,7 +1852,7 @@ bool readDependencies(Options *options)
         return false;
 
     // Jam in the dependencies of the platform plugin, since the application will crash without it
-    if (!readDependenciesFromElf(options, options->qtInstallDirectory + QLatin1String("/plugins/platforms/android/libqtforandroid.so"), &usedDependencies, &remainingDependencies))
+    if (!readDependenciesFromElf(options, options->qtInstallDirectory + QLatin1String("/lib/qt/plugins/platforms/android/libqtforandroid.so"), &usedDependencies, &remainingDependencies))
         return false;
 
     while (!remainingDependencies.isEmpty()) {
