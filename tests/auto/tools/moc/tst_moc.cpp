@@ -671,7 +671,6 @@ private slots:
     void templateGtGt();
     void qprivateslots();
     void qprivateproperties();
-    void inlineSlotsWithThrowDeclaration();
     void warnOnPropertyWithoutREAD();
     void constructors();
     void typenameWithUnsigned();
@@ -822,7 +821,7 @@ void tst_Moc::oldStyleCasts()
 
     QStringList args;
     args << "-c" << "-x" << "c++" << "-Wold-style-cast" << "-I" << "."
-         << "-I" << qtIncludePath << "-o" << "/dev/null" << "-fPIC" << "-std=c++11" << "-";
+         << "-I" << qtIncludePath << "-o" << "/dev/null" << "-fPIC" << "-std=c++1z" << "-";
     proc.start("gcc", args);
     QVERIFY(proc.waitForStarted());
     proc.write(mocOut);
@@ -890,7 +889,7 @@ void tst_Moc::inputFileNameWithDotsButNoExtension()
 
     QStringList args;
     args << "-c" << "-x" << "c++" << "-I" << ".."
-         << "-I" << qtIncludePath << "-o" << "/dev/null" << "-fPIC" << "-std=c++11" << "-";
+         << "-I" << qtIncludePath << "-o" << "/dev/null" << "-fPIC" << "-std=c++1z" << "-";
     proc.start("gcc", args);
     QVERIFY(proc.waitForStarted());
     proc.write(mocOut);
@@ -1165,7 +1164,7 @@ void tst_Moc::ignoreOptionClashes()
     QStringList gccArgs;
     gccArgs << "-c" << "-x" << "c++" << "-I" << ".."
          << "-I" << qtIncludePath << "-I" << includeDir << "-o" << "/dev/null"
-         << "-fPIC" << "-std=c++11" <<  "-";
+         << "-fPIC" << "-std=c++1z" <<  "-";
     proc.start("gcc", gccArgs);
     QVERIFY(proc.waitForStarted());
     proc.write(mocOut);
@@ -1574,19 +1573,6 @@ void tst_Moc::qprivateproperties()
 
 }
 
-#include "task189996.h"
-
-void InlineSlotsWithThrowDeclaration::c() noexcept {}
-
-void tst_Moc::inlineSlotsWithThrowDeclaration()
-{
-    InlineSlotsWithThrowDeclaration tst;
-    const QMetaObject *mobj = tst.metaObject();
-    QVERIFY(mobj->indexOfSlot("a()") != -1);
-    QVERIFY(mobj->indexOfSlot("b()") != -1);
-    QVERIFY(mobj->indexOfSlot("c()") != -1);
-}
-
 void tst_Moc::warnOnPropertyWithoutREAD()
 {
 #ifdef MOC_CROSS_COMPILED
@@ -1847,7 +1833,7 @@ void tst_Moc::notifyError()
 
     QStringList args;
     args << "-c" << "-x" << "c++" << "-I" << "."
-         << "-I" << qtIncludePath << "-o" << "/dev/null" << "-fPIC" << "-std=c++11" << "-";
+         << "-I" << qtIncludePath << "-o" << "/dev/null" << "-fPIC" << "-std=c++1z" << "-";
     proc.start("gcc", args);
     QVERIFY(proc.waitForStarted());
     proc.write(mocOut);
