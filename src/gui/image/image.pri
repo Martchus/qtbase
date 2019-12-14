@@ -97,10 +97,10 @@ qtConfig(png) {
     MIPS_DSPR2_ASM += image/qimage_mips_dspr2_asm.S
 } else {
     # see https://developer.android.com/ndk/guides/abis
-    arm64-v8a {
+    equals(ANDROID_TARGET_ARCH, arm64-v8a) {
         SOURCES += image/qimage_neon.cpp
     }
-    x86 | x86_64 {
+    equals(ANDROID_TARGET_ARCH, x86) | equals(ANDROID_TARGET_ARCH, x86_64) {
         DEFINES += QT_COMPILER_SUPPORTS_SSE2 QT_COMPILER_SUPPORTS_SSE3 QT_COMPILER_SUPPORTS_SSSE3
         SOURCES += image/qimage_ssse3.cpp
     }

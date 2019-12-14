@@ -158,15 +158,15 @@ gcc:equals(QT_GCC_MAJOR_VERSION, 5) {
     MIPS_DSPR2_ASM += painting/qdrawhelper_mips_dspr2_asm.S
 } else {
     # see https://developer.android.com/ndk/guides/abis
-    x86 | x86_64 {
+    equals(ANDROID_TARGET_ARCH, x86) | equals(ANDROID_TARGET_ARCH, x86_64) {
         DEFINES += QT_COMPILER_SUPPORTS_SSE2 QT_COMPILER_SUPPORTS_SSE3 QT_COMPILER_SUPPORTS_SSSE3
         SOURCES += painting/qdrawhelper_sse2.cpp painting/qdrawhelper_ssse3.cpp
     }
-    x86_64 {
+    equals(ANDROID_TARGET_ARCH, x86_64) {
         DEFINES += QT_COMPILER_SUPPORTS_SSE4_1 QT_COMPILER_SUPPORTS_SSE4_2
         SOURCES += painting/qdrawhelper_sse4.cpp painting/qimagescale_sse4.cpp
     }
-    arm64-v8a {
+    equals(ANDROID_TARGET_ARCH, arm64-v8a) {
         SOURCES += painting/qdrawhelper_neon.cpp painting/qimagescale_neon.cpp
         HEADERS += painting/qdrawhelper_neon_p.h
     }
