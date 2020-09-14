@@ -14,7 +14,7 @@ qt_add_module(WinMain
       $<TARGET_PROPERTY:Qt::Core,INTERFACE_INCLUDE_DIRECTORIES>
 )
 
-set_property(TARGET WinMain PROPERTY OUTPUT_NAME qtmain)
+set_property(TARGET WinMain PROPERTY OUTPUT_NAME qt6main)
 
 qt_extend_target(WinMain CONDITION
     SOURCES qtmain_win.cpp
