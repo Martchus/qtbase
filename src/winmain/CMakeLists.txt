@@ -20,7 +20,7 @@ if (MSVC)
     string(REPLACE "/Zi" "/Z7" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 endif()
 
-set_property(TARGET WinMain PROPERTY OUTPUT_NAME qtmain)
+set_property(TARGET WinMain PROPERTY OUTPUT_NAME qt6main)
 
 qt_internal_extend_target(WinMain CONDITION
     SOURCES qtmain_win.cpp
