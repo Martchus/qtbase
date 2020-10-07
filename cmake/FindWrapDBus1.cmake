@@ -45,3 +45,6 @@ include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(WrapDBus1 REQUIRED_VARS
                                             DBus1_LIBRARY DBus1_INCLUDE_DIR WrapDBus1_FOUND
                                             VERSION_VAR DBus1_VERSION)
+if(TARGET dbus-1)
+    set_property(TARGET dbus-1 PROPERTY IMPORTED_IMPLIB ${DBus1_LIBRARY})
+endif()
