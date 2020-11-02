@@ -61,14 +61,8 @@
 
 // including jpeglib.h seems to be a little messy
 extern "C" {
-// jpeglib.h->jmorecfg.h tries to typedef int boolean; but this conflicts with
-// some Windows headers that may or may not have been included
-#ifdef HAVE_BOOLEAN
-#  undef HAVE_BOOLEAN
-#endif
-#define boolean jboolean
-
 #define XMD_H           // shut JPEGlib up
+#include <jconfig.h>    // ensure jconfig.h is included before jmorecfg.h
 #include <jpeglib.h>
 #ifdef const
 #  undef const          // remove crazy C hackery in jconfig.h
