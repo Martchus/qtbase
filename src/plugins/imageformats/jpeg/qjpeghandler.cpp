@@ -26,6 +26,7 @@
 // including jpeglib.h seems to be a little messy
 extern "C" {
 #define XMD_H           // shut JPEGlib up
+#include <jconfig.h>    // ensure jconfig.h is included before jmorecfg.h
 #include <jpeglib.h>
 #ifdef const
 #  undef const          // remove crazy C hackery in jconfig.h
