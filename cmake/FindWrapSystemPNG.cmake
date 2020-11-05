@@ -33,7 +33,7 @@ find_package_handle_standard_args(WrapSystemPNG
 if(WrapSystemPNG_FOUND)
     add_library(WrapSystemPNG::WrapSystemPNG INTERFACE IMPORTED)
     target_link_libraries(WrapSystemPNG::WrapSystemPNG
-                          INTERFACE "${__png_target_name}")
+                          INTERFACE "${__png_target_name}" ${LIBPNG_DEPENDENCIES})
 endif()
 unset(__png_target_name)
 unset(__png_found)
