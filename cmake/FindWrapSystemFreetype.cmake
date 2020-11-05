@@ -44,7 +44,7 @@ find_package_handle_standard_args(WrapSystemFreetype
 if(WrapSystemFreetype_FOUND)
     add_library(WrapSystemFreetype::WrapSystemFreetype INTERFACE IMPORTED)
     target_link_libraries(WrapSystemFreetype::WrapSystemFreetype
-                          INTERFACE "${__freetype_target_name}")
+                          INTERFACE "${__freetype_target_name}" ${FREETYPE_DEPENDENCIES})
 endif()
 unset(__freetype_target_name)
 unset(__freetype_found)
