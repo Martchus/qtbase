@@ -22,6 +22,10 @@
 
 #ifndef QT_NO_DBUS
 
+#ifdef QT_STATIC
+#  define DBUS_STATIC_BUILD
+#endif
+
 #ifdef QT_LINKED_LIBDBUS
 #  include <dbus/dbus.h>
 #else
