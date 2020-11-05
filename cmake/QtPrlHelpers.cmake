@@ -107,11 +107,17 @@ ${prl_step1_content_libs}
         OUTPUT "${prl_step1_path}"
         CONTENT "${prl_step1_content}")
 
-    set(library_prefixes ${CMAKE_SHARED_LIBRARY_PREFIX} ${CMAKE_STATIC_LIBRARY_PREFIX})
+    set(library_prefixes
+        ${CMAKE_SHARED_LIBRARY_PREFIX}
+        ${CMAKE_IMPORT_LIBRARY_PREFIX}
+        ${CMAKE_STATIC_LIBRARY_PREFIX})
     set(library_suffixes
         ${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_CMAKE_IMPORT_LIBRARY_SUFFIX}
         ${CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES}
         ${CMAKE_STATIC_LIBRARY_SUFFIX})
+    list(REMOVE_DUPLICATES library_prefixes)
+    list(REMOVE_DUPLICATES library_suffixes)
 
     set(qt_lib_dirs "${QT_BUILD_DIR}/${INSTALL_LIBDIR}")
     if(QT_WILL_INSTALL)
