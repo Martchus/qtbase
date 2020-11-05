@@ -447,7 +447,6 @@ function(_qt_internal_apply_win_prefix_and_suffix target)
 
         # This should cover both MINGW with GCC and CLANG.
         if(NOT MSVC)
-            set_property(TARGET "${target}" PROPERTY IMPORT_SUFFIX ".a")
 
             get_target_property(target_type ${target} TYPE)
             if(target_type STREQUAL "STATIC_LIBRARY")
