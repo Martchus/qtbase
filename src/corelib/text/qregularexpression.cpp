@@ -20,6 +20,11 @@
 #endif
 
 #define PCRE2_CODE_UNIT_WIDTH 16
+#ifdef QT_STATIC
+#define PCRE_STATIC
+#define PCRE2_STATIC
+#endif
+#define PCRE2_EXP_DECL Q_CORE_EXPORT
 
 #include <pcre2.h>
 
