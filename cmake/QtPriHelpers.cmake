@@ -372,9 +372,13 @@ QT.${config_module_name}_private.disabled_features = ${disabled_private_features
         qt_path_join(private_pri_file_path "${target_path}" "${private_pri_file_name}")
         list(APPEND pri_files "${private_pri_file_path}")
 
-        set(library_prefixes ${CMAKE_SHARED_LIBRARY_PREFIX} ${CMAKE_STATIC_LIBRARY_PREFIX})
+        set(library_prefixes
+            ${CMAKE_SHARED_LIBRARY_PREFIX}
+            ${CMAKE_IMPORT_LIBRARY_PREFIX}
+            ${CMAKE_STATIC_LIBRARY_PREFIX})
         set(library_suffixes
             ${CMAKE_SHARED_LIBRARY_SUFFIX}
+            ${CMAKE_CMAKE_IMPORT_LIBRARY_SUFFIX}
             ${CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES}
             ${CMAKE_STATIC_LIBRARY_SUFFIX})
         if(MSVC)
@@ -785,9 +789,13 @@ CONFIG += ${private_config_joined}
         list(APPEND inputs "${preliminary_pri_root}/${cfg}/${pri_data_cmake_file}")
     endforeach()
 
-    set(library_prefixes ${CMAKE_SHARED_LIBRARY_PREFIX} ${CMAKE_STATIC_LIBRARY_PREFIX})
+    set(library_prefixes
+        ${CMAKE_SHARED_LIBRARY_PREFIX}
+        ${CMAKE_IMPORT_LIBRARY_PREFIX}
+        ${CMAKE_STATIC_LIBRARY_PREFIX})
     set(library_suffixes
         ${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_CMAKE_IMPORT_LIBRARY_SUFFIX}
         ${CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES}
         ${CMAKE_STATIC_LIBRARY_SUFFIX})
     if(MSVC)
