@@ -14,7 +14,7 @@ set(WrapOpenSSL_FOUND OFF)
 find_package(WrapOpenSSLHeaders ${WrapOpenSSL_FIND_VERSION} MODULE)
 
 if(TARGET OpenSSL::SSL)
-    if(WIN32)
+    if(WIN32 AND NOT MINGW)
         get_target_property(libType OpenSSL::Crypto TYPE)
         if(libType STREQUAL "ALIAS")
             get_target_property(writableLib OpenSSL::Crypto ALIASED_TARGET)
@@ -29,7 +29,7 @@ if(TARGET OpenSSL::SSL)
     set(WrapOpenSSL_FOUND ON)
 
     add_library(WrapOpenSSL::WrapOpenSSL INTERFACE IMPORTED)
-    target_link_libraries(WrapOpenSSL::WrapOpenSSL INTERFACE OpenSSL::SSL)
+    target_link_libraries(WrapOpenSSL::WrapOpenSSL INTERFACE OpenSSL::SSL ${OPENSSL_DEPENDENCIES})
 endif()
 
 include(FindPackageHandleStandardArgs)
