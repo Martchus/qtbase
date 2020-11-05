@@ -18,7 +18,7 @@ qt_internal_add_plugin(QPSQLDriverPlugin
         QT_NO_CAST_TO_ASCII
         QT_NO_CONTEXTLESS_CONNECT
     LIBRARIES
-        PostgreSQL::PostgreSQL
+        PostgreSQL::PostgreSQL ${POSTGRESQL_DEPENDENCIES}
         Qt::Core
         Qt::CorePrivate
         Qt::SqlPrivate
