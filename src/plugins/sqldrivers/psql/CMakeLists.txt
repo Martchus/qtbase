@@ -19,7 +19,7 @@ qt_internal_add_plugin(QPSQLDriverPlugin
         QT_NO_CAST_FROM_ASCII
         QT_NO_CAST_TO_ASCII
     PUBLIC_LIBRARIES
-        PostgreSQL::PostgreSQL
+        PostgreSQL::PostgreSQL ${POSTGRESQL_DEPENDENCIES}
         Qt::Core
         Qt::CorePrivate
         Qt::SqlPrivate
