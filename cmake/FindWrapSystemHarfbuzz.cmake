@@ -54,7 +54,7 @@ find_package_handle_standard_args(WrapSystemHarfbuzz
 if(WrapSystemHarfbuzz_FOUND)
     add_library(WrapSystemHarfbuzz::WrapSystemHarfbuzz INTERFACE IMPORTED)
     target_link_libraries(WrapSystemHarfbuzz::WrapSystemHarfbuzz
-                          INTERFACE "${__harfbuzz_target_name}")
+                          INTERFACE "${__harfbuzz_target_name}" ${HARFBUZZ_DEPENDENCIES})
 endif()
 unset(__harfbuzz_target_name)
 unset(__harfbuzz_found)
