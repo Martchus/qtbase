@@ -26,7 +26,7 @@ if(OpenSSL_FOUND)
     set(WrapOpenSSL_FOUND ON)
 
     add_library(WrapOpenSSL::WrapOpenSSL INTERFACE IMPORTED)
-    target_link_libraries(WrapOpenSSL::WrapOpenSSL INTERFACE OpenSSL::SSL)
+    target_link_libraries(WrapOpenSSL::WrapOpenSSL INTERFACE OpenSSL::SSL ${OPENSSL_DEPENDENCIES})
 endif()
 
 include(FindPackageHandleStandardArgs)
