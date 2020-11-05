@@ -38,6 +38,7 @@ if(MySQL_FOUND AND NOT TARGET MySQL::MySQL)
   add_library(MySQL::MySQL UNKNOWN IMPORTED)
   set_target_properties(MySQL::MySQL PROPERTIES
                         IMPORTED_LOCATION "${MySQL_LIBRARIES}"
+                        INTERFACE_LINK_LIBRARIES "${MYSQL_DEPENDENCIES}"
                         INTERFACE_INCLUDE_DIRECTORIES "${MySQL_INCLUDE_DIRS}")
 endif()
 
