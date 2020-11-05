@@ -348,11 +348,17 @@ ${prl_step1_content_libs}
          CONTENT
          "FINAL_PRL_FILE_PATH = ${final_prl_file_path}")
 
-    set(library_prefixes ${CMAKE_SHARED_LIBRARY_PREFIX} ${CMAKE_STATIC_LIBRARY_PREFIX})
+    set(library_prefixes
+        ${CMAKE_SHARED_LIBRARY_PREFIX}
+        ${CMAKE_IMPORT_LIBRARY_PREFIX}
+        ${CMAKE_STATIC_LIBRARY_PREFIX})
     set(library_suffixes
         ${CMAKE_SHARED_LIBRARY_SUFFIX}
+        ${CMAKE_CMAKE_IMPORT_LIBRARY_SUFFIX}
         ${CMAKE_EXTRA_SHARED_LIBRARY_SUFFIXES}
         ${CMAKE_STATIC_LIBRARY_SUFFIX})
+    list(REMOVE_DUPLICATES library_prefixes)
+    list(REMOVE_DUPLICATES library_suffixes)
 
     if(QT_GENERATOR_IS_MULTI_CONFIG)
         set(configs ${CMAKE_CONFIGURATION_TYPES})
