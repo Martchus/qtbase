@@ -63,13 +63,13 @@ find_path(MySQL_INCLUDE_DIR
 
 find_library(MySQL_LIBRARY
              NO_PACKAGE_ROOT_PATH
-             NAMES libmysql mysql mysqlclient libmariadb mariadb
+             NAMES libmariadb mariadb mariadbclient libmysql mysql mysqlclient
              HINTS ${MySQL_library_hints})
 
 if(MySQL_library_hints_debug)
     find_library(MySQL_LIBRARY_DEBUG
                  NO_PACKAGE_ROOT_PATH
-                 NAMES libmysql mysql mysqlclient libmariadb mariadb
+                 NAMES libmariadb mariadb mariadbclient libmysql mysql mysqlclient
                  HINTS ${MySQL_library_hints_debug})
 endif()
 
