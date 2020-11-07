@@ -27,7 +27,7 @@ find_path(MySQL_INCLUDE_DIRS
           PATH_SUFFIXES mysql mariadb)
 
 find_library(MySQL_LIBRARIES
-             NAMES libmysql mysql mysqlclient libmariadb mariadb
+             NAMES libmariadb mariadb mariadbclient libmysql mysql mysqlclient
              HINTS ${PC_MySQL_LIBDIR})
 
 include(FindPackageHandleStandardArgs)
