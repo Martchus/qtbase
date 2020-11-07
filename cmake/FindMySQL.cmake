@@ -24,10 +24,10 @@ pkg_check_modules(PC_MySQL QUIET mysqlclient)
 find_path(MySQL_INCLUDE_DIRS
           NAMES mysql.h
           HINTS ${PC_MySQL_INCLUDEDIR}
-          PATH_SUFFIXES mysql)
+          PATH_SUFFIXES mariadb mysql)
 
 find_library(MySQL_LIBRARIES
-             NAMES mysqlclient
+             NAMES mariadb mariadbclient mysqlclient
              HINTS ${PC_MySQL_LIBDIR}
 )
 
