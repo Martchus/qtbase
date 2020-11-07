@@ -4,6 +4,10 @@
 # These values should be kept in sync with those in qtbase/.cmake.conf
 cmake_minimum_required(VERSION 3.16...3.21)
 
+if (CMAKE_FIND_LIBRARY_SUFFIXES_OVERRIDE)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES "${CMAKE_FIND_LIBRARY_SUFFIXES_OVERRIDE}")
+endif ()
+
 set(QT_BACKUP_CMAKE_INSTALL_PREFIX_BEFORE_EXTRA_INCLUDE "${CMAKE_INSTALL_PREFIX}")
 
 # This depends on qt_internal_read_repo_dependencies existing.
