@@ -2,6 +2,10 @@ if (CMAKE_VERSION VERSION_LESS 3.1.0)
     message(FATAL_ERROR "Qt requires at least CMake version 3.1.0")
 endif()
 
+if (CMAKE_FIND_LIBRARY_SUFFIXES_OVERRIDE)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES "${CMAKE_FIND_LIBRARY_SUFFIXES_OVERRIDE}")
+endif ()
+
 ######################################
 #
 #       Macros for building Qt modules
@@ -224,6 +228,7 @@ macro(qt_prepare_standalone_project)
 endmacro()
 
 macro(qt_build_repo_begin)
+
     qt_build_internals_set_up_private_api()
     qt_enable_cmake_languages()
 
