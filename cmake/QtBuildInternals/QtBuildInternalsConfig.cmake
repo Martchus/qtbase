@@ -1,6 +1,10 @@
 # These values should be kept in sync with those in qtbase/.cmake.conf
 cmake_minimum_required(VERSION 3.14...3.19)
 
+if (CMAKE_FIND_LIBRARY_SUFFIXES_OVERRIDE)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES "${CMAKE_FIND_LIBRARY_SUFFIXES_OVERRIDE}")
+endif ()
+
 ######################################
 #
 #       Macros for building Qt modules
@@ -268,6 +272,7 @@ macro(qt_prepare_standalone_project)
 endmacro()
 
 macro(qt_build_repo_begin)
+
     qt_build_internals_set_up_private_api()
     qt_enable_cmake_languages()
 
