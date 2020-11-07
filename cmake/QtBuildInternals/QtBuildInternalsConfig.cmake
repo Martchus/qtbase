@@ -1,6 +1,10 @@
 # These values should be kept in sync with those in qtbase/.cmake.conf
 cmake_minimum_required(VERSION 3.14...3.19)
 
+if (CMAKE_FIND_LIBRARY_SUFFIXES_OVERRIDE)
+    set(CMAKE_FIND_LIBRARY_SUFFIXES "${CMAKE_FIND_LIBRARY_SUFFIXES_OVERRIDE}")
+endif ()
+
 ###############################################
 #
 # Macros and functions for building Qt modules
