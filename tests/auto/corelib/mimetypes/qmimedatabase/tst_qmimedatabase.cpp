@@ -71,15 +71,15 @@ static inline QString testSuiteWarning()
 
     QString result;
     QTextStream str(&result);
-    str << "\nCannot find the shared-mime-info test suite\nstarting from: "
+    str << "\nCannot find the shared-mime-info test suite\nin the parent of: "
         << QDir::toNativeSeparators(QDir::currentPath()) << "\n"
            "cd " << QDir::toNativeSeparators(QStringLiteral("tests/auto/corelib/mimetypes/qmimedatabase")) << "\n"
-           "wget http://cgit.freedesktop.org/xdg/shared-mime-info/snapshot/Release-1-10.zip\n"
-           "unzip Release-1-10.zip\n";
+           "wget https://gitlab.freedesktop.org/xdg/shared-mime-info/-/archive/2.1/shared-mime-info-2.1.zip\n"
+           "unzip shared-mime-info-2.1.zip\n";
 #ifdef Q_OS_WIN
-    str << "mkdir testfiles\nxcopy /s Release-1-10 s-m-i\n";
+    str << "mkdir testfiles\nxcopy /s shared-mime-info-2.1 s-m-i\n";
 #else
-    str << "ln -s Release-1-10 s-m-i\n";
+    str << "ln -s shared-mime-info-2.1 s-m-i\n";
 #endif
     return result;
 }
@@ -166,7 +166,7 @@ void tst_QMimeDatabase::initTestCase()
 #endif
 
     if (m_hasFreedesktopOrg) {
-        m_testSuite = QFINDTESTDATA("s-m-i/tests");
+        m_testSuite = QFINDTESTDATA("s-m-i/tests/mime-detection");
         if (m_testSuite.isEmpty())
             qWarning("%s", qPrintable(testSuiteWarning()));
     }
@@ -683,7 +683,7 @@ void tst_QMimeDatabase::allMimeTypes()
 
     // Hardcoding this is the only way to check both providers find the same number of mimetypes.
     if (m_hasFreedesktopOrg)
-        QCOMPARE(lst.size(), 908);
+        QCOMPARE(lst.size(), 811);
     else
         QCOMPARE(lst.size(), 1640); // interestingly, tika has more mimetypes (but many are empty)
 
