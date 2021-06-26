@@ -39,7 +39,7 @@
 
 /***************************************************************************/
 /*                                                                         */
-/*  qgrayraster.c, derived from ftgrays.c                                  */
+/*  qgrayraster.cpp, derived from ftgrays.c                                */
 /*                                                                         */
 /*    A new `perfect' anti-aliasing renderer (body).                       */
 /*                                                                         */
@@ -157,16 +157,11 @@
 #  include <vxWorksCommon.h>    /* needed for setjmp.h */
 #endif
 #include <string.h>             /* for qt_ft_memcpy() */
-#include <setjmp.h>
 #include <limits.h>
 
 #define QT_FT_UINT_MAX  UINT_MAX
 
 #define qt_ft_memset   memset
-
-#define qt_ft_setjmp   setjmp
-#define qt_ft_longjmp  longjmp
-#define qt_ft_jmp_buf  jmp_buf
 
 #include <stddef.h>
 typedef ptrdiff_t  QT_FT_PtrDist;
@@ -176,6 +171,8 @@ typedef ptrdiff_t  QT_FT_PtrDist;
 #define ErrRaster_Invalid_Argument  -3
 #define ErrRaster_Memory_Overflow   -4
 #define ErrRaster_OutOfMemory       -6
+
+struct RasterMemoryOverflow {};
 
 #define QT_FT_BEGIN_HEADER
 #define QT_FT_END_HEADER
@@ -310,8 +307,6 @@ QT_FT_END_STMNT
     int  band_size;
     int  band_shoot;
 
-    qt_ft_jmp_buf  jump_buffer;
-
     void*       buffer;
     long        buffer_size;
 
@@ -333,11 +328,13 @@ QT_FT_END_STMNT
 
   } TRaster, *PRaster;
 
+  extern "C" {
   int q_gray_rendered_spans(TRaster *raster)
   {
     if ( raster && raster->worker )
       return raster->worker->skip_spans > 0 ? 0 : -raster->worker->skip_spans;
     return 0;
+  }
   }
 
   /*************************************************************************/
@@ -404,7 +401,6 @@ QT_FT_END_STMNT
     ras.max_ey = ( ras.max_ey + 63 ) >> 6;
   }
 
-
   /*************************************************************************/
   /*                                                                       */
   /* Record the current cell in the table.                                 */
@@ -433,7 +429,7 @@ QT_FT_END_STMNT
     }
 
     if ( ras.num_cells >= ras.max_cells )
-      qt_ft_longjmp( ras.jump_buffer, 1 );
+      throw RasterMemoryOverflow();
 
     cell        = ras.cells + ras.num_cells++;
     cell->x     = x;
@@ -1506,7 +1502,7 @@ QT_FT_END_STMNT
 
       QT_FT_TRACE5(( "  move to (%.2f, %.2f)\n",
                      v_start.x / 64.0, v_start.y / 64.0 ));
-      error = gray_move_to( &v_start, user );
+      error = gray_move_to( &v_start, static_cast<PWorker>(user) );
       if ( error )
         goto Exit;
 
@@ -1528,7 +1524,7 @@ QT_FT_END_STMNT
 
             QT_FT_TRACE5(( "  line to (%.2f, %.2f)\n",
                            vec.x / 64.0, vec.y / 64.0 ));
-            gray_render_line(user, UPSCALE(vec.x), UPSCALE(vec.y));
+            gray_render_line(static_cast<PWorker>(user), UPSCALE(vec.x), UPSCALE(vec.y));
             continue;
           }
 
@@ -1557,7 +1553,7 @@ QT_FT_END_STMNT
                                " with control (%.2f, %.2f)\n",
                                vec.x / 64.0, vec.y / 64.0,
                                v_control.x / 64.0, v_control.y / 64.0 ));
-                gray_render_conic(user, &v_control, &vec);
+                gray_render_conic(static_cast<PWorker>(user), &v_control, &vec);
                 continue;
               }
 
@@ -1571,7 +1567,7 @@ QT_FT_END_STMNT
                              " with control (%.2f, %.2f)\n",
                              v_middle.x / 64.0, v_middle.y / 64.0,
                              v_control.x / 64.0, v_control.y / 64.0 ));
-              gray_render_conic(user, &v_control, &v_middle);
+              gray_render_conic(static_cast<PWorker>(user), &v_control, &v_middle);
 
               v_control = vec;
               goto Do_Conic;
@@ -1581,7 +1577,7 @@ QT_FT_END_STMNT
                            " with control (%.2f, %.2f)\n",
                            v_start.x / 64.0, v_start.y / 64.0,
                            v_control.x / 64.0, v_control.y / 64.0 ));
-            gray_render_conic(user, &v_control, &v_start);
+            gray_render_conic(static_cast<PWorker>(user), &v_control, &v_start);
             goto Close;
           }
 
@@ -1616,7 +1612,7 @@ QT_FT_END_STMNT
                              vec.x / 64.0, vec.y / 64.0,
                              vec1.x / 64.0, vec1.y / 64.0,
                              vec2.x / 64.0, vec2.y / 64.0 ));
-              gray_render_cubic(user, &vec1, &vec2, &vec);
+              gray_render_cubic(static_cast<PWorker>(user), &vec1, &vec2, &vec);
               continue;
             }
 
@@ -1625,7 +1621,7 @@ QT_FT_END_STMNT
                            v_start.x / 64.0, v_start.y / 64.0,
                            vec1.x / 64.0, vec1.y / 64.0,
                            vec2.x / 64.0, vec2.y / 64.0 ));
-            gray_render_cubic(user, &vec1, &vec2, &v_start);
+            gray_render_cubic(static_cast<PWorker>(user), &vec1, &vec2, &v_start);
             goto Close;
           }
         }
@@ -1634,7 +1630,7 @@ QT_FT_END_STMNT
       /* close the contour with a line segment */
       QT_FT_TRACE5(( "  line to (%.2f, %.2f)\n",
                      v_start.x / 64.0, v_start.y / 64.0 ));
-      gray_render_line(user, UPSCALE(v_start.x), UPSCALE(v_start.y));
+      gray_render_line(static_cast<PWorker>(user), UPSCALE(v_start.x), UPSCALE(v_start.y));
 
    Close:
       first = last + 1;
@@ -1662,14 +1658,11 @@ QT_FT_END_STMNT
   {
     volatile int  error = 0;
 
-    if ( qt_ft_setjmp( ras.jump_buffer ) == 0 )
-    {
+    try {
       error = QT_FT_Outline_Decompose( &ras.outline, &ras );
       if ( !ras.invalid )
         gray_record_cell( RAS_VAR );
-    }
-    else
-    {
+    } catch (const RasterMemoryOverflow &) {
       error = ErrRaster_Memory_Overflow;
     }
 
@@ -1934,7 +1927,7 @@ QT_FT_END_STMNT
   static int
   gray_raster_new( QT_FT_Raster*  araster )
   {
-    *araster = malloc(sizeof(TRaster));
+    *araster = static_cast<TRaster *>(malloc(sizeof(TRaster)));
     if (!*araster) {
         *araster = 0;
         return ErrRaster_Memory_Overflow;
