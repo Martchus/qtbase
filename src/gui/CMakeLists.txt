@@ -174,7 +174,7 @@ qt_internal_add_module(Gui
         painting/qdrawingprimitive_sse2_p.h
         painting/qemulationpaintengine.cpp painting/qemulationpaintengine_p.h
         painting/qfixed_p.h
-        painting/qgrayraster.c painting/qgrayraster_p.h
+        painting/qgrayraster.cpp painting/qgrayraster_p.h
         painting/qicc.cpp painting/qicc_p.h
         painting/qimagescale.cpp painting/qimagescale_p.h
         painting/qmath_p.h
@@ -281,6 +281,11 @@ qt_internal_add_module(Gui
         "(^|/)qplatform.+\\.h$|(^|/)qwindowsystem.+\\.h$"
     RHI_HEADER_FILTERS
         "(^|/)qrhi\\.h$|(^|/)qrhi_platform\\.h$|(^|/)qshader\\.h$|(^|/)qshaderdescription\\.h$"
+)
+
+# enable exceptions for painting/qgrayraster.cpp
+set_source_files_properties("painting/qgrayraster.cpp"
+    PROPERTIES COMPILE_FLAGS "-fexceptions" DISABLE_PRECOMPILE_HEADERS ON SKIP_PRECOMPILE_HEADERS ON
 )
 
 # Resources:
