@@ -1,5 +1,7 @@
 # Qt gui library, paint module
 
+CONFIG += exceptions
+
 HEADERS += \
         painting/qbackingstore.h \
         painting/qbezier_p.h \
@@ -80,7 +82,7 @@ SOURCES += \
         painting/qcosmeticstroker.cpp \
         painting/qdrawhelper.cpp \
         painting/qemulationpaintengine.cpp \
-        painting/qgrayraster.c \
+        painting/qgrayraster.cpp \
         painting/qicc.cpp \
         painting/qimagescale.cpp \
         painting/qmatrix.cpp \
