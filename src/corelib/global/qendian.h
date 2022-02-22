@@ -330,9 +330,9 @@ public:
     }
 
     static Q_DECL_CONSTEXPR QSpecialInteger max()
-    { return QSpecialInteger(std::numeric_limits<T>::max()); }
+    { return QSpecialInteger((std::numeric_limits<T>::max)()); }
     static Q_DECL_CONSTEXPR QSpecialInteger min()
-    { return QSpecialInteger(std::numeric_limits<T>::min()); }
+    { return QSpecialInteger((std::numeric_limits<T>::min)()); }
 };
 
 template<typename T>
