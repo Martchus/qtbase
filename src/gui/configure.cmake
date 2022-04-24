@@ -50,7 +50,7 @@ qt_find_package(WrapSystemFreetype 2.2.0 MODULE
 if(QT_FEATURE_system_zlib)
     qt_add_qmake_lib_dependency(freetype zlib)
 endif()
-qt_find_package(Fontconfig PROVIDED_TARGETS Fontconfig::Fontconfig MODULE_NAME gui
+qt_find_package(Fontconfig PROVIDED_TARGETS PkgConfig::Fontconfig MODULE_NAME gui
     QMAKE_LIB fontconfig
     VCPKG_PORT fontconfig
     VCPKG_ADD_TO_FEATURE fontconfig
