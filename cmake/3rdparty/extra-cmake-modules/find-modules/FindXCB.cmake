@@ -108,6 +108,7 @@ set(XCB_known_components
     EWMH
     GLX
     ICCCM
+    UTIL
     IMAGE
     KEYSYMS
     PRESENT
@@ -117,7 +118,6 @@ set(XCB_known_components
     RES
     SCREENSAVER
     SYNC
-    UTIL
     XEVIE
     XF86DRI
     XINERAMA
@@ -142,7 +142,7 @@ endforeach()
 set(XCB_XCB_component_deps)
 set(XCB_COMPOSITE_component_deps XCB XFIXES)
 set(XCB_DAMAGE_component_deps XCB XFIXES)
-set(XCB_IMAGE_component_deps XCB SHM)
+set(XCB_IMAGE_component_deps XCB SHM UTIL)
 set(XCB_RENDERUTIL_component_deps XCB RENDER)
 set(XCB_XFIXES_component_deps XCB RENDER SHAPE)
 set(XCB_XVMC_component_deps XCB XV)
