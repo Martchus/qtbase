@@ -52,7 +52,7 @@
 #=============================================================================
 
 find_package(PkgConfig QUIET)
-pkg_check_modules(PC_GLIB2 QUIET glib-2.0)
+pkg_check_modules(PC_GLIB2 QUIET glib-2.0 IMPORTED_TARGET)
 
 find_path(GLIB2_INCLUDE_DIRS
           NAMES glib.h
@@ -64,14 +64,14 @@ find_library(GLIB2_LIBRARIES
              HINTS ${PC_GLIB2_LIBDIR}
 )
 
-pkg_check_modules(PC_GTHREAD2 QUIET gthread-2.0)
+pkg_check_modules(PC_GTHREAD2 QUIET gthread-2.0 IMPORTED_TARGET)
 
 find_library(GTHREAD2_LIBRARIES
              NAMES gthread-2.0
              HINTS ${PC_GTHREAD2_LIBDIR}
 )
 
-pkg_check_modules(PC_GOBJECT QUIET gobject-2.0)
+pkg_check_modules(PC_GOBJECT QUIET gobject-2.0 IMPORTED_TARGET)
 
 find_path(GLIB2_GOBJECT_INCLUDE_DIRS
           NAMES glib-object.h
@@ -83,7 +83,7 @@ find_library(GLIB2_GOBJECT_LIBRARIES
              HINTS ${PC_GOBJECT_LIBDIR}
 )
 
-pkg_check_modules(PC_GIO QUIET gio-2.0)
+pkg_check_modules(PC_GIO QUIET gio-2.0 IMPORTED_TARGET)
 
 find_path(GLIB2_GIO_INCLUDE_DIRS
           NAMES gio/gio.h
@@ -159,6 +159,20 @@ mark_as_advanced(GLIB2_INCLUDE_DIRS GLIB2_INCLUDE_DIR
                  GLIB2_GOBJECT_LIBRARIES GLIB2_GOBJECT_LIBRARY
                  GLIB2_GIO_INCLUDE_DIRS GLIB2_GIO_INCLUDE_DIR
                  GLIB2_GIO_LIBRARIES GLIB2_GIO_LIBRARY)
+
+option(GLIB2_USE_PKG_CONFIG "Use properties from PkgConfig targets" OFF)
+if(GLIB2_USE_PKG_CONFIG)
+  foreach(TARGET_NAME GLIB2 GOBJECT GIO)
+    if(TARGET "GLIB2::${TARGET_NAME}")
+      foreach(PROP_NAME INTERFACE_LINK_OPTIONS INTERFACE_LINK_LIBRARIES
+                        INTERFACE_COMPILE_OPTIONS INTERFACE_COMPILE_DEFINITIONS
+                        INTERFACE_INCLUDE_DIRECTORIES)
+        get_target_property(PROP_VAL "PkgConfig::PC_${TARGET_NAME}" "${PROP_NAME}")
+        set_target_properties("GLIB2::${TARGET_NAME}" PROPERTIES "${PROP_NAME}" "${PROP_VAL}")
+      endforeach()
+    endif()
+  endforeach()
+endif()
 
 include(FeatureSummary)
 set_package_properties(GLIB2 PROPERTIES
