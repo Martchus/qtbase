@@ -75,6 +75,13 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #=============================================================================
 
+option(WAYLAND_USE_PKG_CONFIG "Use properties from PkgConfig targets" OFF)
+if(WAYLAND_USE_PKG_CONFIG)
+  find_package(PkgConfig QUIET)
+  pkg_check_modules(PC_WAYLAND_Client QUIET wayland-client IMPORTED_TARGET)
+  pkg_check_modules(PC_WAYLAND_Server QUIET wayland-server IMPORTED_TARGET)
+endif()
+
 include(${CMAKE_CURRENT_LIST_DIR}/ECMFindModuleHelpersStub.cmake)
 
 ecm_find_package_version_check(Wayland)
@@ -135,6 +142,20 @@ find_package_handle_standard_args(Wayland
         Wayland_VERSION
     HANDLE_COMPONENTS
 )
+
+# pull dependencies via package config
+if(WAYLAND_USE_PKG_CONFIG)
+  foreach(TARGET_NAME Client Server)
+    if(TARGET "Wayland::${TARGET_NAME}")
+      foreach(PROP_NAME INTERFACE_LINK_OPTIONS INTERFACE_LINK_LIBRARIES
+                        INTERFACE_COMPILE_OPTIONS INTERFACE_COMPILE_DEFINITIONS
+                        INTERFACE_INCLUDE_DIRECTORIES)
+        get_target_property(PROP_VAL "PkgConfig::PC_WAYLAND_${TARGET_NAME}" "${PROP_NAME}")
+        set_target_properties("Wayland::${TARGET_NAME}" PROPERTIES "${PROP_NAME}" "${PROP_VAL}")
+      endforeach()
+    endif()
+  endforeach()
+endif()
 
 include(FeatureSummary)
 set_package_properties(Wayland PROPERTIES
