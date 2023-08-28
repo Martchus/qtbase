@@ -49,6 +49,7 @@ static const char *const additionalMimeFiles[] = {
     "yast2-metapackage-handler-mimetypes.xml",
     "qml-again.xml",
     "text-x-objcsrc.xml",
+    "text-plain-subclass.xml",
     "invalid-magic1.xml",
     "invalid-magic2.xml",
     "invalid-magic3.xml",
@@ -1165,6 +1166,8 @@ void tst_QMimeDatabase::installNewLocalMimeType()
         QVERIFY(objcsrc.isValid());
         QCOMPARE(objcsrc.globPatterns(), QStringList());
     }
+    QCOMPARE(db.mimeTypeForFile(QLatin1String("foo.txt"), QMimeDatabase::MatchExtension).name(),
+             QString::fromLatin1("text/plain"));
 
     // Test that a double-definition of a mimetype doesn't lead to sniffing ("conflicting globs").
     const QString qmlTestFile = s_additionalFilesResourcePrefix + QLatin1String("test.qml");
