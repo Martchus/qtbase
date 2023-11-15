@@ -8,6 +8,7 @@
         <file>invalid-magic1.xml</file>
         <file>invalid-magic2.xml</file>
         <file>invalid-magic3.xml</file>
+        <file>circular-inheritance.xml</file>
         <file>magic-and-hierarchy.xml</file>
         <file>magic-and-hierarchy.foo</file>
         <file>magic-and-hierarchy2.foo</file>
