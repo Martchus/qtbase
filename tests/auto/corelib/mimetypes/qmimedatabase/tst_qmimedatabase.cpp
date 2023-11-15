@@ -54,6 +54,7 @@ static const char *const additionalMimeFiles[] = {
     "invalid-magic2.xml",
     "invalid-magic3.xml",
     "magic-and-hierarchy.xml",
+    "circular-inheritance.xml",
     0
 };
 
