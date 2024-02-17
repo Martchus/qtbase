@@ -779,8 +779,7 @@ qt_internal_extend_target(Core CONDITION WIN32
         text/qlocale_win.cpp
 )
 
-# On MS-Win, clang has two flavors, one of which immitates MSVC (so claims to be it)
-qt_internal_extend_target(Core CONDITION WIN32 AND MSVC AND NOT CLANG
+qt_internal_extend_target(Core CONDITION WIN32
     LIBRARIES
         runtimeobject
 )
