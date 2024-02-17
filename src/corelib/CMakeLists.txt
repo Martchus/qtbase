@@ -913,6 +913,11 @@ qt_internal_extend_target(Core CONDITION WASM
         text/qlocale_wasm.cpp
 )
 
+# workaround undefined reference to `__sync_bool_compare_and_swap_16'
+if (QT_FEATURE_cpp_winrt AND MINGW AND CMAKE_SIZEOF_VOID_P EQUAL 8 AND CMAKE_SYSTEM_PROCESSOR MATCHES "(x86.*)|(X86.*)|(amd64)|(AMD64)")
+    set_property(SOURCE text/qlocale_win.cpp APPEND PROPERTY COMPILE_FLAGS "-mcx16")
+endif ()
+
 qt_internal_extend_target(Core CONDITION MSVC AND CLANG
     LIBRARIES
         clang_rt.builtins-$<IF:$<STREQUAL:${TEST_architecture_arch},arm64>,aarch64,x86_64>
