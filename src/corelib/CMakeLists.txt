@@ -883,7 +883,7 @@ qt_internal_extend_target(Core CONDITION WASM
         text/qlocale_wasm.cpp
 )
 
-qt_internal_extend_target(Core CONDITION MSVC
+qt_internal_extend_target(Core CONDITION WIN32
     LIBRARIES
         runtimeobject
 )
