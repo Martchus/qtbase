@@ -15,6 +15,10 @@ function(__qt_internal_get_emroot_path_suffix_from_emsdk_env out_var)
     string(REGEX MATCH "EMSCRIPTEN_ROOT.*$" EMROOT "${ver}")
     string(REGEX MATCH "'([^' ]*)'" EMROOT2 "${EMROOT}")
     string(REPLACE "'" "" EMROOT_PATH "${EMROOT2}")
+    if (IS_ABSOLUTE ${EMROOT_PATH})
+        set($ENV{EMSDK} "${EMROOT_PATH}")
+        set(EMROOT_PATH "")
+    endif ()
 
     # Newer emsdk versions write the path relative to the config file's directory, using a
     # $CFGDIR placeholder that only emscripten itself expands. The config file lives in EMSDK,
