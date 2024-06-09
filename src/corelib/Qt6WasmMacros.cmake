@@ -1,6 +1,11 @@
 # Copyright (C) 2022 The Qt Company Ltd.
 # SPDX-License-Identifier: BSD-3-Clause
 
+# Workaround `Unknown CMake command "_qt_test_emscripten_version".`
+if(NOT COMMAND _qt_test_emscripten_version)
+    include("$ENV{EMSDK}/system/lib/cmake/Qt6/QtPublicWasmToolchainHelpers.cmake")
+endif()
+
 # Copy in Qt HTML/JS launch files for apps.
 function(_qt_internal_wasm_add_target_helpers target)
 
