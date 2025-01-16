@@ -73,7 +73,7 @@ public class QtActivityBase extends Activity
         m_isCustomThemeSet = true;
     }
 
-    private void restartApplication() {
+    protected void restartApplication() {
         Intent intent = Intent.makeRestartActivityTask(getComponentName());
         startActivity(intent);
         QtNative.quitApp();
@@ -83,6 +83,11 @@ public class QtActivityBase extends Activity
     public QtActivityBase()
     {
         m_delegate = new QtActivityDelegate(this);
+    }
+
+    protected boolean handleRestart(Bundle savedInstanceState)
+    {
+        return false;
     }
 
     @Override
@@ -97,7 +102,7 @@ public class QtActivityBase extends Activity
                     android.R.style.Theme_Holo_Light);
         }
 
-        if (QtNative.getStateDetails().isStarted) {
+        if (QtNative.getStateDetails().isStarted && !handleRestart(savedInstanceState)) {
             // We don't yet have a reliable way to keep the app
             // running properly in case of an Activity only restart,
             // so for now restart the whole app.
@@ -156,16 +161,26 @@ public class QtActivityBase extends Activity
         QtNative.setApplicationState(QtNative.ApplicationState.ApplicationSuspended);
     }
 
+    protected boolean handleDestruction()
+    {
+        return false;
+    }
+
     @Override
     protected void onDestroy()
     {
         super.onDestroy();
+        boolean destructionHandled = handleDestruction();
         if (!m_retainNonConfigurationInstance) {
             QtNative.unregisterAppStateListener(m_delegate);
-            QtNative.terminateQt();
+            if (!destructionHandled) {
+                QtNative.terminateQt();
+            }
             QtNative.setActivity(null);
-            QtNative.getQtThread().exit();
-            System.exit(0);
+            if (!destructionHandled) {
+                QtNative.getQtThread().exit();
+                System.exit(0);
+            }
         }
     }
 
