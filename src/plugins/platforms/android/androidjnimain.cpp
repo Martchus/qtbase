@@ -176,7 +176,7 @@ namespace QtAndroid
             return env->IsInstanceOf(QtAndroidPrivate::service().object(), m_qtServiceClass);
         // return true as default as Qt application is our default use case.
         // famous last words: we should not end up here
-        return true;
+        return false;
     }
 
 #if QT_CONFIG(accessibility)
