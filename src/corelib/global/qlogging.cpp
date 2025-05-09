@@ -203,7 +203,7 @@ static bool isFatal(QtMsgType msgType)
     return false;
 }
 
-#if defined(Q_OS_LINUX) || defined(Q_OS_DARWIN) || defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD)
+#if (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || defined(Q_OS_DARWIN) || defined(Q_OS_FREEBSD) || defined(Q_OS_NETBSD)
 static bool qt_append_thread_name_to(QString &message)
 {
     std::array<char, 16> name{};
