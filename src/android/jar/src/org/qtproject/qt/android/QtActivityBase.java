@@ -118,12 +118,13 @@ public class QtActivityBase extends Activity
 
             QtLoader.LoadingResult result = loader.loadQtLibraries();
 
-            if (result == QtLoader.LoadingResult.Succeeded) {
+            if (result == QtLoader.LoadingResult.Failed) {
+                showErrorDialog();
+            } else {
                 m_delegate.startNativeApplication(loader.getApplicationParameters(),
                         loader.getMainLibraryPath());
-            } else if (result == QtLoader.LoadingResult.Failed) {
-                showErrorDialog();
             }
+
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
             showErrorDialog();
