@@ -19,6 +19,10 @@ public class QtServiceBase extends Service {
 
         // the application has already started, do not reload everything again
         if (QtNative.getStateDetails().isStarted) {
+            if (handleRestart()) {
+                QtNative.setService(this);
+                return;
+            }
             Log.w(QtNative.QtTAG,
                     "A QtService tried to start in the same process as an initiated " +
                             "QtActivity. That is not supported. This results in the service " +
@@ -49,11 +53,16 @@ public class QtServiceBase extends Service {
     public void onDestroy()
     {
         super.onDestroy();
-        QtNative.quitQtCoreApplication();
-        QtNative.terminateQt();
+        boolean destructionHandled = handleDestruction();
+        if (!destructionHandled) {
+            QtNative.quitQtCoreApplication();
+            QtNative.terminateQt();
+        }
         QtNative.setService(null);
-        QtNative.getQtThread().exit();
-        System.exit(0);
+        if (!destructionHandled) {
+            QtNative.getQtThread().exit();
+            System.exit(0);
+        }
     }
 
     @Override
@@ -61,5 +70,15 @@ public class QtServiceBase extends Service {
         synchronized (this) {
             return QtNative.onBind(intent);
         }
+    }
+
+    protected boolean handleRestart()
+    {
+        return false;
+    }
+
+    protected boolean handleDestruction()
+    {
+        return false;
     }
 }
