@@ -1585,9 +1585,13 @@ ${indent3}\"name\": \"${platform_name}\",")
             string(APPEND platforms_information "
 ${indent3}\"variant\": \"${platform_variant}\",")
         endif()
-        if(NOT "${CMAKE_SYSTEM_VERSION}" STREQUAL "")
+        if(NOT "${CMAKE_SYSTEM_VERSION}" STREQUAL "" AND
+            NOT platform_name STREQUAL "Linux")
             string(APPEND platforms_information "
 ${indent3}\"version\": \"${CMAKE_SYSTEM_VERSION}\",")
+        else()
+            string(APPEND platforms_information "
+${indent3}\"version\": null,")
         endif()
         string(APPEND platforms_information "
 ${indent3}\"compiler_id\": \"${CMAKE_CXX_COMPILER_ID}\",
