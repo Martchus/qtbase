@@ -337,7 +337,7 @@ qt_internal_extend_target(Network CONDITION QT_FEATURE_localserver AND WIN32
         socket/qlocalsocket_win.cpp
 )
 
-qt_internal_extend_target(Network CONDITION QT_FEATURE_openssl_linked AND QT_FEATURE_opensslv30
+qt_internal_extend_target(Network CONDITION QT_FEATURE_openssl_password_digestor AND QT_FEATURE_opensslv30
     LIBRARIES
         WrapOpenSSL::WrapOpenSSL
 )
