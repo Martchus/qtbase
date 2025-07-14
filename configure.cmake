@@ -1176,6 +1176,12 @@ qt_feature("openssl-linked" PUBLIC
     ENABLE INPUT_openssl STREQUAL 'linked'
 )
 qt_feature_definition("openssl-linked" "QT_LINKED_OPENSSL")
+qt_feature("openssl-password-digestor" PUBLIC
+    LABEL "OpenSSL based QPasswordDigestors."
+    AUTODETECT ON
+    CONDITION QT_FEATURE_openssl_linked AND QT_FEATURE_opensslv30
+    PURPOSE "Uses OpenSSL based implementation of QPasswordDigestors."
+)
 qt_feature("opensslv11" PUBLIC
     LABEL "OpenSSL 1.1"
     CONDITION TEST_opensslv11 OR TEST_opensslv11_headers
@@ -1429,6 +1435,7 @@ qt_configure_add_summary_entry(ARGS "Using vcpkg" TYPE "message" MESSAGE "${_vcp
 qt_configure_add_summary_entry(ARGS "libudev")
 qt_configure_add_summary_entry(ARGS "openssl")
 qt_configure_add_summary_entry(ARGS "openssl-linked")
+qt_configure_add_summary_entry(ARGS "openssl-password-digestor")
 qt_configure_add_summary_entry(ARGS "opensslv11")
 qt_configure_add_summary_entry(ARGS "opensslv30")
 qt_configure_add_summary_entry(ARGS "system-zlib")
