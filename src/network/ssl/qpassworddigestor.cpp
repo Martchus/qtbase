@@ -8,11 +8,12 @@
 #include <QtCore/QtEndian>
 #include <QtCore/QList>
 
+#include "qconfig.h"
 #include "qtcore-config_p.h"
 
 #include <limits>
 
-#if QT_CONFIG(opensslv30) && QT_CONFIG(openssl_linked)
+#if QT_CONFIG(opensslv30) && QT_CONFIG(openssl_password_digestor)
 #define USING_OPENSSL30
 #include <openssl/core_names.h>
 #include <openssl/kdf.h>
