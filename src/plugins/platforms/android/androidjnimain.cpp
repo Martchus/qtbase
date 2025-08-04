@@ -410,9 +410,11 @@ static jboolean startQtAndroidPlugin(JNIEnv *env, jobject /*object*/, jstring pa
 
     if (sem_init(&m_exitSemaphore, 0, 0) == -1)
         return false;
+    qDebug() << "init exit semaphore";
 
     if (sem_init(&m_terminateSemaphore, 0, 0) == -1)
         return false;
+    qDebug() << "init terminate semaphore";
 
     return true;
 }
@@ -467,11 +469,15 @@ static void startQtApplication(JNIEnv */*env*/, jclass /*clazz*/)
         QJniObject::callStaticMethod<void>(m_applicationClass, quitMethodName);
     }
 
+    qDebug() << "post terminate semaphore";
     sem_post(&m_terminateSemaphore);
+    qDebug() << "wait exit semaphore";
     sem_wait(&m_exitSemaphore);
+    qDebug() << "destroy exit semaphore";
     sem_destroy(&m_exitSemaphore);
 
     // We must call exit() to ensure that all global objects will be destructed
+    qDebug() << "before exit with QT_ANDROID_NO_EXIT_CALL check";
     if (!qEnvironmentVariableIsSet("QT_ANDROID_NO_EXIT_CALL"))
         exit(ret);
 }
@@ -542,11 +548,15 @@ static void terminateQt(JNIEnv *env, jclass /*clazz*/)
         QCoreApplication::quit();
         QAndroidEventDispatcherStopper::instance()->goingToStop(false);
     }
-
-    if (startQtAndroidPluginCalled.loadAcquire())
+    if (startQtAndroidPluginCalled.loadAcquire()) {
+        qDebug() << "before wait terminate semaphore";
         sem_wait(&m_terminateSemaphore);
+        qDebug() << "after wait terminate semaphore";
+    }
 
+    qDebug() << "destroy terminate semaphore";
     sem_destroy(&m_terminateSemaphore);
+    qDebug() << "after destroy terminate semaphore";
 
     clearJavaReferences(env);
 
