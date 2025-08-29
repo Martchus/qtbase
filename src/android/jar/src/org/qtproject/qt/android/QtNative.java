@@ -362,6 +362,7 @@ public class QtNative
             return;
 
         final String qtParams = mainLib + " " + params;
+        Log.i(QtTAG, "Starting application: " + qtParams);
         getQtThread().post(() -> { startQtNativeApplication(qtParams); });
     }
 
