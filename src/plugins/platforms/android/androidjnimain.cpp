@@ -462,9 +462,12 @@ static void startQtNativeApplication(JNIEnv *jenv, jobject object, jstring param
 
     // The service must wait until the QCoreApplication starts,
     // otherwise onBind will be called too early.
-    if (QtAndroidPrivate::service().isValid() && QtAndroid::isQtApplication())
-        QtAndroidPrivate::waitForServiceSetup();
+    if (QtAndroidPrivate::service().isValid() && QtAndroid::isQtApplication()) {
+        qInfo() << "NOT waiting for service setup, this otherwise hangs infinitively";
+        //QtAndroidPrivate::waitForServiceSetup();
+    }
 
+    qInfo() << "Entering main()";
     const int ret = m_main(argc, argv.data());
     qInfo() << "main() returned" << ret;
 
