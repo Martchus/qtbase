@@ -17,6 +17,8 @@
 
 #include "q26numeric.h"
 
+#include <iostream>
+
 QT_BEGIN_NAMESPACE
 
 #ifndef TIME_KILL_SYNCHRONOUS
@@ -239,23 +241,31 @@ QWindowsMessageWindowClassContext::QWindowsMessageWindowClassContext()
     : atom(0), className(0)
 {
     // make sure that multiple Qt's can coexist in the same process
+    std::cerr << "QWindowsMessageWindowClassContext\n";
     const QString qClassName = QStringLiteral("QEventDispatcherWin32_Internal_Widget")
         + QString::number(quintptr(qt_internal_proc));
+    std::cerr << "after QWindowsMessageWindowClassContext\n";
     className = new wchar_t[qClassName.size() + 1];
+    std::cerr << "after wchar_t\n";
     qClassName.toWCharArray(className);
+    std::cerr << "after toWCharArray\n";
     className[qClassName.size()] = 0;
+    std::cerr << "after qClassName.size()\n";
 
     WNDCLASS wc;
     wc.style = 0;
     wc.lpfnWndProc = qt_internal_proc;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
+    std::cerr << "GetModuleHandle\n";
     wc.hInstance = GetModuleHandle(0);
+    std::cerr << "GetModuleHandle end\n";
     wc.hIcon = 0;
     wc.hCursor = 0;
     wc.hbrBackground = 0;
     wc.lpszMenuName = NULL;
     wc.lpszClassName = className;
+    std::cerr << "RegisterClass\n";
     atom = RegisterClass(&wc);
     if (!atom) {
         qErrnoWarning("%ls RegisterClass() failed", qUtf16Printable(qClassName));
@@ -276,9 +286,11 @@ Q_GLOBAL_STATIC(QWindowsMessageWindowClassContext, qWindowsMessageWindowClassCon
 
 static HWND qt_create_internal_window(const QEventDispatcherWin32 *eventDispatcher)
 {
+    std::cerr << "qt_create_internal_window\n";
     QWindowsMessageWindowClassContext *ctx = qWindowsMessageWindowClassContext();
     if (!ctx->atom)
         return 0;
+    std::cerr << "CreateWindow\n";
     HWND wnd = CreateWindow(ctx->className,    // classname
                             ctx->className,    // window name
                             0,                 // style
@@ -287,12 +299,14 @@ static HWND qt_create_internal_window(const QEventDispatcherWin32 *eventDispatch
                             0,                 // menu handle
                             GetModuleHandle(0),     // application
                             0);                // windows creation data.
+    std::cerr << "CreateWindow done\n";
 
     if (!wnd) {
         qErrnoWarning("CreateWindow() for QEventDispatcherWin32 internal window failed");
         return 0;
     }
 
+    std::cerr << "SetWindowLongPtr\n";
     SetWindowLongPtr(wnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(eventDispatcher));
 
     return wnd;

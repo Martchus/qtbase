@@ -110,6 +110,8 @@
 #include <memory>
 #include <string>
 
+#include <iostream>
+
 #ifdef Q_OS_WIN
 #  include <qt_windows.h>
 #endif
@@ -446,6 +448,7 @@ static inline bool contains(int argc, char **argv, const char *needle)
 QCoreApplicationPrivate::QCoreApplicationPrivate(int &aargc, char **aargv)
     : argc(aargc), argv(aargv)
 {
+    std::cerr << "QCoreApplicationPrivate\n";
     static const char *const empty = "";
     if (argc == 0 || argv == nullptr) {
         argc = 0;
@@ -457,6 +460,7 @@ QCoreApplicationPrivate::QCoreApplicationPrivate(int &aargc, char **aargv)
         origArgv = q20::make_unique_for_overwrite<char *[]>(argc);
         std::copy(argv, argv + argc, origArgv.get());
     }
+    std::cerr << "QCoreApplicationPrivate after args\n";
 #endif // Q_OS_WIN
 
 #ifndef QT_NO_QOBJECT
@@ -468,9 +472,13 @@ QCoreApplicationPrivate::QCoreApplicationPrivate(int &aargc, char **aargv)
 #  endif // Q_OS_UNIX
 
     QThread *cur = QThread::currentThread(); // note: this may end up setting theMainThread!
+    std::cerr << "QCoreApplicationPrivate getting thread lock\n";
     if (cur != theMainThread.loadAcquire())
         qWarning("WARNING: QApplication was not created in the main() thread.");
+    std::cerr << "QCoreApplicationPrivate has thread lock\n";
 #endif
+
+    std::cerr << "QCoreApplicationPrivate end\n";
 }
 
 QCoreApplicationPrivate::~QCoreApplicationPrivate()
@@ -515,7 +523,9 @@ void QCoreApplicationPrivate::createEventDispatcher()
     Q_Q(QCoreApplication);
     QThreadData *data = QThreadData::current();
     Q_ASSERT(!data->hasEventDispatcher());
+    std::cerr << "create disp\n";
     eventDispatcher = data->createEventDispatcher();
+    std::cerr << "created disp\n";
     eventDispatcher->setParent(q);
 }
 
@@ -759,9 +769,12 @@ QCoreApplication::QCoreApplication(int &argc, char **argv
     : QObject(*new QCoreApplicationPrivate(argc, argv))
 #endif
 {
+    std::cerr << "q_ptr\n";
     d_func()->q_ptr = this;
+    std::cerr << "init\n";
     d_func()->init();
 #ifndef QT_NO_QOBJECT
+    std::cerr << "startingUp\n";
     QCoreApplicationPrivate::eventDispatcher->startingUp();
 #endif
 }
@@ -784,14 +797,17 @@ void Q_TRACE_INSTRUMENT(qtcore) QCoreApplicationPrivate::init()
     Q_Q(QCoreApplication);
 
 #if defined(Q_OS_WIN) && !defined(QT_BOOTSTRAPPED)
+    std::cerr << "init debugging console\n";
     initDebuggingConsole();
 #endif
 
+    std::cerr << "init locale\n";
     initLocale();
 
     Q_ASSERT_X(!QCoreApplication::self, "QCoreApplication", "there should be only one application object");
 #if QT_VERSION < QT_VERSION_CHECK(7, 0, 0)
     QCoreApplication::self = q;
+    std::cerr << "init store relaxed\n";
     g_self.storeRelaxed(q);
 #else
     QCoreApplication::self.storeRelaxed(q);
@@ -826,7 +842,9 @@ void Q_TRACE_INSTRUMENT(qtcore) QCoreApplicationPrivate::init()
     // Reset the lib paths, so that they will be recomputed, taking the availability of argv[0]
     // into account. If necessary, recompute right away and replay the manual changes on top of the
     // new lib paths.
+    std::cerr << "init before paths\n";
     if (coreappdata->libPathsInitialized()) {
+        std::cerr << "init in paths\n";
         const QStringList appPaths = std::move(coreappdata->app_libpaths);
         Q_ASSERT(!coreappdata->libPathsInitialized());
 
@@ -857,25 +875,31 @@ void Q_TRACE_INSTRUMENT(qtcore) QCoreApplicationPrivate::init()
 #ifndef QT_NO_QOBJECT
     // use the event dispatcher created by the app programmer (if any)
     Q_ASSERT(!eventDispatcher);
+    std::cerr << "init load relaxed\n";
     auto thisThreadData = threadData.loadRelaxed();
     eventDispatcher = thisThreadData->eventDispatcher.loadRelaxed();
 
     // otherwise we create one
+    std::cerr << "init create disp\n";
     if (!eventDispatcher)
         createEventDispatcher();
     Q_ASSERT(eventDispatcher);
 
+    std::cerr << "init check parent\n";
     if (!eventDispatcher->parent()) {
+        std::cerr << "init move th\n";
         eventDispatcher->moveToThread(thisThreadData->thread.loadAcquire());
         eventDispatcher->setParent(q);
     }
 
     thisThreadData->eventDispatcher = eventDispatcher;
+    std::cerr << "init event dispatcher ready\n";
     eventDispatcherReady();
 #endif
 
     processCommandLineArguments();
 
+    std::cerr << "init pre routines\n";
     qt_call_pre_routines();
     QT_MANGLE_NAMESPACE(qt_startup_hook)();
 #ifndef QT_BOOTSTRAPPED
@@ -885,6 +909,7 @@ void Q_TRACE_INSTRUMENT(qtcore) QCoreApplicationPrivate::init()
 #endif
 
 #ifndef QT_NO_QOBJECT
+    std::cerr << "init app running\n";
     is_app_running = true; // No longer starting up.
 #endif
 }
@@ -1084,6 +1109,7 @@ bool QCoreApplication::notifyInternal2(QObject *receiver, QEvent *event)
     // the current thread, so receiver->d_func()->threadData is
     // equivalent to QThreadData::current(), just without the function
     // call overhead.
+    std::cerr << "QCoreApplication::notifyInternal2\n";
     QObjectPrivate *d = receiver->d_func();
     QThreadData *threadData = d->threadData.loadAcquire();
     bool selfRequired = threadData->requiresCoreApplication;
@@ -1094,10 +1120,12 @@ bool QCoreApplication::notifyInternal2(QObject *receiver, QEvent *event)
     // though QApplication is subclassed...
     bool result = false;
     void *cbdata[] = { receiver, event, &result };
+    std::cerr << "activateCallbacks\n";
     if (QInternal::activateCallbacks(QInternal::EventNotifyCallback, cbdata)) {
         return result;
     }
 
+    std::cerr << "QScopedScopeLevelCounter\n";
     QScopedScopeLevelCounter scopeLevelCounter(threadData);
     if (!selfRequired)
         return doNotify(receiver, event);
@@ -1106,6 +1134,7 @@ bool QCoreApplication::notifyInternal2(QObject *receiver, QEvent *event)
     if (!QThread::isMainThread())
         return false;
 #endif
+    std::cerr << "qApp->notify(receiver, event);\n";
     return qApp->notify(receiver, event);
 }
 
@@ -1179,6 +1208,7 @@ bool QCoreApplication::forwardEvent(QObject *receiver, QEvent *event, QEvent *or
 
 bool QCoreApplication::notify(QObject *receiver, QEvent *event)
 {
+    std::cerr << "QCoreApplication::notify(QObject *receiver, QEvent *event)\n";
     Q_ASSERT(receiver);
     Q_ASSERT(event);
 
@@ -1207,6 +1237,7 @@ static bool doNotify(QObject *receiver, QEvent *event)
     QCoreApplicationPrivate::checkReceiverThread(receiver);
 #endif
 
+    std::cerr << "doNotify\n";
     return receiver->isWidgetType() ? false : QCoreApplicationPrivate::notify_helper(receiver, event);
 }
 

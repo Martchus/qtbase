@@ -12,6 +12,8 @@
 #include "qeventloop.h"
 #include "qmutex.h"
 
+#include <iostream>
+
 QT_BEGIN_NAMESPACE
 
 using namespace Qt::StringLiterals;
@@ -85,7 +87,9 @@ void QThreadData::clearEvents()
 
 QAbstractEventDispatcher *QThreadData::createEventDispatcher()
 {
+    std::cerr << "data->createEventDispatcher()\n";
     QAbstractEventDispatcher *ed = QThreadPrivate::createEventDispatcher(this);
+    std::cerr << "store release\n";
     eventDispatcher.storeRelease(ed);
     return ed;
 }

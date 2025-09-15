@@ -81,6 +81,8 @@
 
 #include <sstream>
 
+#include <iostream>
+
 QT_BEGIN_NAMESPACE
 
 using namespace QNativeInterface::Private;
@@ -2583,6 +2585,7 @@ QString QWidget::styleSheet() const
 
 void QWidget::setStyleSheet(const QString& styleSheet)
 {
+    std::cerr << "within setStyleSheet\n";
     Q_D(QWidget);
     if (data->in_destructor)
         return;
@@ -2613,6 +2616,7 @@ void QWidget::setStyleSheet(const QString& styleSheet)
         return;
     }
 
+    std::cerr << "setStyle_helper\n";
     if (testAttribute(Qt::WA_SetStyle)) {
         d->setStyle_helper(new QStyleSheetStyle(d->extra->style), true);
     } else {
@@ -2712,7 +2716,9 @@ void QWidgetPrivate::setStyle_helper(QStyle *newStyle, bool propagate)
 #endif
 
     QEvent e(QEvent::StyleChange);
+    std::cerr << "QCoreApplication::sendEvent\n";
     QCoreApplication::sendEvent(q, &e);
+    std::cerr << "after QCoreApplication::sendEvent\n";
 
 #if QT_CONFIG(style_stylesheet)
     // dereference the old stylesheet style
