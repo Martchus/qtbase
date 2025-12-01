@@ -361,8 +361,17 @@ void QPlatformFontDatabase::releaseHandle(void *handle)
 QString QPlatformFontDatabase::fontDir() const
 {
     QString fontpath = qEnvironmentVariable("QT_QPA_FONTDIR");
-    if (fontpath.isEmpty())
+    if (fontpath.isEmpty()) {
+#ifdef Q_OS_WIN
+        QString windir = qEnvironmentVariable("WINDIR");
+        if (windir.isEmpty())
+            fontpath = "C:/Windows/Fonts"_L1;
+        else
+            fontpath = windir + "/Fonts"_L1;
+#else
         fontpath = QLibraryInfo::path(QLibraryInfo::LibrariesPath) + "/fonts"_L1;
+#endif
+    }
 
     return fontpath;
 }
