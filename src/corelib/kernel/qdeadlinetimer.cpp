@@ -6,6 +6,8 @@
 
 QT_BEGIN_NAMESPACE
 
+constexpr QDeadlineTimer::ForeverConstant QDeadlineTimer::Forever;
+
 QT_IMPL_METATYPE_EXTERN(QDeadlineTimer)
 
 using namespace std::chrono;
