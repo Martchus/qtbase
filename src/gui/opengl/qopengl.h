@@ -11,15 +11,21 @@
 // On Windows we need to ensure that APIENTRY and WINGDIAPI are defined before
 // we can include gl.h. But we do not want to include <windows.h> in this public
 // Qt header, as it pollutes the global namespace with macros.
+// We also need to make sure that CALLBACK and GLAPI are defined (and all of
+// these keep being defined) in case <GL/glu.h> is included after this header.
 #if defined(Q_OS_WIN)
 # ifndef APIENTRY
 #  define APIENTRY __stdcall
-#  define Q_UNDEF_APIENTRY
 # endif // APIENTRY
 # ifndef WINGDIAPI
 #  define WINGDIAPI __declspec(dllimport)
-#  define Q_UNDEF_WINGDIAPI
 # endif // WINGDIAPI
+# ifndef CALLBACK
+#  define CALLBACK APIENTRY
+# endif // CALLBACK
+# ifndef GLAPI
+#  define GLAPI extern
+# endif // GLAPI
 # define QT_APIENTRY __stdcall
 #endif
 
@@ -280,15 +286,6 @@ typedef ptrdiff_t qopengl_GLsizeiptr;
 # endif
 
 QT_END_NAMESPACE
-
-#ifdef Q_UNDEF_WINGDIAPI
-# undef WINGDIAPI
-# undef Q_UNDEF_WINGDIAPI
-#endif
-#ifdef Q_UNDEF_APIENTRY
-# undef APIENTRY
-# undef Q_UNDEF_APIENTRY
-#endif
 
 #endif // QT_NO_OPENGL
 
