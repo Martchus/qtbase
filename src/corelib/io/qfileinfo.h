@@ -13,6 +13,10 @@
 #include <QtCore/qdatetime.h>
 #include <QtCore/qtimezone.h>
 
+#ifdef stat
+#undef stat
+#endif
+
 QT_BEGIN_NAMESPACE
 
 
