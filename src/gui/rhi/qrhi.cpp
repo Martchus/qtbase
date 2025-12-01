@@ -25,6 +25,9 @@
 
 QT_BEGIN_NAMESPACE
 
+constexpr int QRhi::MAX_MIP_LEVELS;
+constexpr int QRhiShaderResourceBinding::LAYOUT_DESC_ENTRIES_PER_BINDING;
+
 // Play nice with QSG_INFO since that is still the most commonly used
 // way to get graphics info printed from Qt Quick apps, and the Quick
 // scenegraph is our primary user.
