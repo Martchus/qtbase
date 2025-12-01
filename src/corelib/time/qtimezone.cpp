@@ -16,6 +16,9 @@
 
 QT_BEGIN_NAMESPACE
 
+constexpr int QTimeZone::MinUtcOffsetSecs;
+constexpr int QTimeZone::MaxUtcOffsetSecs;
+
 static_assert(!std::is_constructible_v<QTimeZone, Qt::TimeSpec>);
 using namespace Qt::StringLiterals;
 
