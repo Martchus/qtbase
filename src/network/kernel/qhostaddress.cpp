@@ -29,6 +29,11 @@
 
 QT_BEGIN_NAMESPACE
 
+constexpr QAbstractSocket::NetworkLayerProtocol QHostAddress::IPv4Protocol;
+constexpr QAbstractSocket::NetworkLayerProtocol QHostAddress::IPv6Protocol;
+constexpr QAbstractSocket::NetworkLayerProtocol QHostAddress::AnyIPProtocol;
+constexpr QAbstractSocket::NetworkLayerProtocol QHostAddress::UnknownNetworkLayerProtocol;
+
 #if QT_VERSION < QT_VERSION_CHECK(7, 0, 0)
 const QAbstractSocket::NetworkLayerProtocol QHostAddress::IPv4Protocol;
 const QAbstractSocket::NetworkLayerProtocol QHostAddress::IPv6Protocol;
