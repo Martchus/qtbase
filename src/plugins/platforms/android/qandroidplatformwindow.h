@@ -73,6 +73,8 @@ public:
     void lockSurface() { m_surfaceMutex.lock(); }
     void unlockSurface() { m_surfaceMutex.unlock(); }
 
+    static int surfacesCount();
+
 protected:
     void setGeometry(const QRect &rect) override;
     void createSurface();
@@ -81,6 +83,8 @@ protected:
     bool blockedByModal() const;
     bool isEmbeddingContainer() const;
     virtual void clearSurface() {}
+    static void incrementSurfacesCount();
+    static void decrementSurfacesCount();
 
     Qt::WindowFlags m_windowFlags;
     Qt::WindowStates m_windowState;
