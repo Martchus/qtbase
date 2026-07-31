@@ -106,6 +106,12 @@
 #include <openssl/dh.h>
 #endif
 
+#if defined(OPENSSL_VERSION_MAJOR) && OPENSSL_VERSION_MAJOR >= 4
+#define QT_OPENSSL4_CONST const
+#else
+#define QT_OPENSSL4_CONST
+#endif
+
 QT_BEGIN_NAMESPACE
 
 struct QSslErrorEntry {
