@@ -131,15 +131,15 @@ public:
 
     void init(const QByteArray &data, QSsl::EncodingFormat format);
 
-    static QByteArray asn1ObjectId(ASN1_OBJECT *object);
-    static QByteArray asn1ObjectName(ASN1_OBJECT *object);
+    static QByteArray asn1ObjectId(const ASN1_OBJECT *object);
+    static QByteArray asn1ObjectName(const ASN1_OBJECT *object);
     static QByteArray QByteArray_from_X509(X509 *x509, QSsl::EncodingFormat format);
     static QString text_from_X509(X509 *x509);
     static QSslCertificate QSslCertificate_from_X509(X509 *x509);
     static QList<QSslCertificate> certificatesFromPem(const QByteArray &pem, int count = -1);
     static QList<QSslCertificate> certificatesFromDer(const QByteArray &der, int count = -1);
     static bool isBlacklisted(const QSslCertificate &certificate);
-    static QSslCertificateExtension convertExtension(X509_EXTENSION *ext);
+    static QSslCertificateExtension convertExtension(QT_OPENSSL4_CONST X509_EXTENSION *ext);
     static QByteArray subjectInfoToString(QSslCertificate::SubjectInfo info);
 
     friend class QSslSocketBackendPrivate;
