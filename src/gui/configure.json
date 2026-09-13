@@ -236,7 +236,7 @@
                     "FT_Face face = 0;"
                 ]
             },
-            "headers": "ft2build.h",
+            "headers": "freetype2/ft2build.h",
             "sources": [
                 { "type": "pkgConfig", "args": "--libs freetype2", "condition": "features.shared" },
                 { "libs": "-lfreetype -lharfbuzz -lfreetype -lbrotlidec -lbrotlicommon -lglib-2.0 -lintl -lws2_32 -lole32 -lwinmm -lshlwapi -lpcre2-8 -lintl -lpcre2-8 -lintl -liconv -lgraphite2 -lbz2", "condition": "!features.shared && !config.wasm" },
