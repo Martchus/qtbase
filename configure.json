@@ -193,7 +193,7 @@
                 "main": "(void) dbus_bus_get_private(DBUS_BUS_SYSTEM, (DBusError *)NULL);",
                 "qmake": "static: DEFINES += DBUS_STATIC_BUILD"
             },
-            "headers": "dbus/dbus.h",
+            "headers": "dbus-1.0/dbus/dbus.h",
             "sources": [
                 { "type": "pkgConfig", "args": "dbus-1 >= 1.2" },
                 {
