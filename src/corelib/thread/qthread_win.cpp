@@ -52,6 +52,9 @@ Q_CONSTINIT static thread_local QThreadData *currentThreadData = nullptr;
 static void deref_current_thread_data(QThreadData *data);
 static void destroy_current_thread_data(void *p)
 {
+    if (!p) {
+        return;
+    }
     QThreadData *data = static_cast<QThreadData *>(p);
     QThread *thread = data->thread.loadAcquire();
 
